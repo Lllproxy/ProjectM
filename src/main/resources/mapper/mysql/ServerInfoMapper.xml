@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.ServerInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.ServerInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="s_id" jdbcType="VARCHAR" property="sId" />
+    <result column="api" jdbcType="VARCHAR" property="api" />
+    <result column="s_status" jdbcType="INTEGER" property="sStatus" />
+    <result column="s_dsc" jdbcType="LONGVARCHAR" property="sDsc" />
+  </resultMap>
+</mapper>

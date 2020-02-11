@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.UserInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="u_id" jdbcType="VARCHAR" property="uId" />
+    <result column="u_name" jdbcType="VARCHAR" property="uName" />
+    <result column="u_password" jdbcType="VARCHAR" property="uPassword" />
+    <result column="is_work" jdbcType="INTEGER" property="isWork" />
+  </resultMap>
+</mapper>

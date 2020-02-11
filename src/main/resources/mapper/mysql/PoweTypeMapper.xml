@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.PoweTypeMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.PoweType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="p_type" jdbcType="VARCHAR" property="pType" />
+    <result column="pt_id" jdbcType="VARCHAR" property="ptId" />
+    <result column="p_type_name" jdbcType="VARCHAR" property="pTypeName" />
+  </resultMap>
+</mapper>

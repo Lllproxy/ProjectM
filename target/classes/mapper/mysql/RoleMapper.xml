@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.Role">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="r_id" jdbcType="VARCHAR" property="rId" />
+    <result column="r_name" jdbcType="VARCHAR" property="rName" />
+    <result column="p_r_id" jdbcType="VARCHAR" property="pRId" />
+    <result column="is_work" jdbcType="INTEGER" property="isWork" />
+  </resultMap>
+</mapper>

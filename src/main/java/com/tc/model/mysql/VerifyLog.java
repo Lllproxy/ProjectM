@@ -9,7 +9,7 @@ public class VerifyLog {
      */
     @Id
     @Column(name = "v_id")
-    private String vId;
+    private Integer vId;
 
     /**
      * 用户id
@@ -40,7 +40,7 @@ public class VerifyLog {
      *
      * @return v_id - 唯一标识
      */
-    public String getvId() {
+    public Integer getvId() {
         return vId;
     }
 
@@ -49,7 +49,7 @@ public class VerifyLog {
      *
      * @param vId 唯一标识
      */
-    public void setvId(String vId) {
+    public void setvId(Integer vId) {
         this.vId = vId;
     }
 

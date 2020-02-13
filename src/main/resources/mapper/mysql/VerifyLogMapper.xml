@@ -5,7 +5,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="v_id" jdbcType="VARCHAR" property="vId" />
+    <id column="v_id" jdbcType="INTEGER" property="vId" />
     <result column="u_id" jdbcType="VARCHAR" property="uId" />
     <result column="p_id" jdbcType="VARCHAR" property="pId" />
     <result column="v_time" jdbcType="VARCHAR" property="vTime" />

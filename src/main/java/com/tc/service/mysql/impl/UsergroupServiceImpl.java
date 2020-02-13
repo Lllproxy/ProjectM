@@ -21,7 +21,7 @@ public class UsergroupServiceImpl extends AbstractService<Usergroup> implements 
 
     @Override
     public void deleteById(String id) {
-
+        usergroupMapper.deleteById(id);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class UserInfoController {
     }
 
     @PostMapping("/add")
-    @ApiOperation(httpMethod="POST",value="新增用户", notes="name必传 is_work 默认 1-启用")
+    @ApiOperation(httpMethod="POST",value="新增用户", notes="{u_name必传 is_work 默认 1-启用,password 密码}")
     public Result add(@RequestBody  @ApiParam(name = "data",value ="新增json" , required = true) JSONObject data) {
         try {
             String uId=UUID.randomUUID().toString();
@@ -69,9 +69,9 @@ public class UserInfoController {
             }
             UserInfo userInfo = new UserInfo();
             //设置是否启用
-            userInfo.setIsWork(null==data.get("is_work")?1:Integer.valueOf(data.get("password").toString()));
+            userInfo.setIsWork(null==data.get("is_work")?1:Integer.valueOf(data.get("is_work").toString()));
             userInfo.setuId(uId);
-            userInfo.setuName(data.get("name").toString());
+            userInfo.setuName(data.get("u_name").toString());
             userInfo.setuPassword(null==data.get("password")?"123456":data.get("password").toString());
             userInfoService.save(userInfo);
         }catch (Exception e) {

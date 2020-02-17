@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Table(name = "verify_log")
 public class VerifyLog {
+
     /**
      * 唯一标识
      */
@@ -18,16 +19,17 @@ public class VerifyLog {
     private String uId;
 
     /**
+     * 用户id
+     */
+    @Column(name = "v_r_dec")
+    private String vrDec;
+
+    /**
      * 权限id
      */
     @Column(name = "p_id")
     private String pId;
 
-    /**
-     * 鉴定时间
-     */
-    @Column(name = "v_time")
-    private String vTime;
 
     /**
      * 鉴定结果
@@ -89,23 +91,6 @@ public class VerifyLog {
         this.pId = pId;
     }
 
-    /**
-     * 获取鉴定时间
-     *
-     * @return v_time - 鉴定时间
-     */
-    public String getvTime() {
-        return vTime;
-    }
-
-    /**
-     * 设置鉴定时间
-     *
-     * @param vTime 鉴定时间
-     */
-    public void setvTime(String vTime) {
-        this.vTime = vTime;
-    }
 
     /**
      * 获取鉴定结果
@@ -123,5 +108,21 @@ public class VerifyLog {
      */
     public void setvResult(Integer vResult) {
         this.vResult = vResult;
+    }
+
+    /**
+     * 获取
+     * @return
+     */
+    public String getVrDec() {
+        return vrDec;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public void setVrDec(String vrDec) {
+        this.vrDec = vrDec;
     }
 }

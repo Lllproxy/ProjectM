@@ -38,7 +38,7 @@ public class WebInfoController {
     @GetMapping("/{id}")
     @ApiOperation(httpMethod="GET",value="查询资源详细", notes="id作为路径参数必传")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "{id}", value = "", required = true, dataType = "String")
+        @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
     public Result detail(@PathVariable Integer id) {
         WebInfo webInfo = webInfoService.findById(id);
@@ -48,8 +48,8 @@ public class WebInfoController {
     @GetMapping("/list")
     @ApiOperation(httpMethod="GET",value="查询资源列表", notes="页大小默认size=10")
 	@ApiImplicitParams({
-            @ApiImplicitParam(name = "{page}", value = "页号", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "{size}", value = "页大小", required = true, dataType = "int")
+            @ApiImplicitParam(name = "page", value = "页号", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "size", value = "页大小", required = true, dataType = "int")
 	}) 
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);

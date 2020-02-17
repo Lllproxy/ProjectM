@@ -38,7 +38,7 @@ public class RoleController {
     @GetMapping("/{id}")
     @ApiOperation(httpMethod="GET",value="", notes="查询角色详细")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "{id}", value = "", required = true, dataType = "String")
+        @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
     public Result detail(@PathVariable Integer id) {
         Role role = roleService.findById(id);
@@ -48,8 +48,8 @@ public class RoleController {
     @GetMapping("/list")
     @ApiOperation(httpMethod="GET",value="查询角色列表", notes="page默认=0  size=10")
 	@ApiImplicitParams({
-            @ApiImplicitParam(name = "{page}", value = "页号", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "{size}", value = "页大小", required = true, dataType = "int")
+            @ApiImplicitParam(name = "page", value = "页号", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "size", value = "页大小", required = true, dataType = "int")
 	}) 
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         PageHelper.startPage(page, size);

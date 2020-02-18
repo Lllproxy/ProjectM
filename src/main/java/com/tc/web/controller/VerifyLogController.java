@@ -46,12 +46,6 @@ public class VerifyLogController {
     private RolePowerService rolePowerService;
 
     @Resource
-    private PowerWeb powerWeb;
-
-    @Resource
-    private PowerServer powerServer;
-
-    @Resource
     private PowerService powerServices;
 
     @Resource
@@ -149,11 +143,11 @@ public class VerifyLogController {
      * 权限验证
      * @param
      */
-    @PostMapping("/verify/{u_id}/{p_id}")
+    @GetMapping("/verify/{u_id}/{p_id}")
     @ApiOperation(httpMethod="GET",value="权限验证", notes="u_id 用户id,p_id 权限id(必传)}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "u_id", value = "", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "p_id", value = "", required = true, dataType = "String")
+            @ApiImplicitParam(name = "u_id", value = "用户id", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "p_id", value = "权限id", required = true, dataType = "String")
     })
     public Result verify(@PathVariable String u_id,@PathVariable String p_id) {
         try {
@@ -165,7 +159,7 @@ public class VerifyLogController {
             //1.查询用户是否启用
             lab:
             {
-                UserInfo userInfo = userInfoService.findBy("", u_id);
+                UserInfo userInfo = userInfoService.findBy("uId", u_id);
                 if (null != userInfo) {
                     if (2 == userInfo.getIsWork()) {
                         //如果用户被禁用

@@ -116,61 +116,47 @@ public class RoleController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/delete/{type}/{r_id}")
+    @DeleteMapping("/delete/{r_id}")
     @ApiOperation(httpMethod="DELETE",value="删除角色", notes="默认DELETE方法 r_id不能为空,type=1 禁用 type=2 物理级联删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "{type}", value = "删除类型", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "{r_id}", value = "角色id", required = true, dataType = "String")
+            @ApiImplicitParam(name = "r_id", value = "角色id", required = true, dataType = "String")
     })
-    public Result delete(@PathVariable Integer type,@PathVariable String  r_id) {
+    public Result delete(@PathVariable String  r_id) {
         String optype;
         try {
-            if (type.equals(1)){
-                optype="禁用";
-                //禁用角色
-                //1.查询该角色
-                Role role=roleService.findById(r_id);
-                //2.设置禁用
-                role.setIsWork(2);
-                roleService.update(role);
-            }else if (type.equals(2)){
-                optype="删除";
-                //级联删除角色
-                //1.删除角色用户关系
-                //1.1.查询该角色对应的的角色用户关系list
-                Condition condition=new Condition(UserRole.class);
-                tk.mybatis.mapper.entity.Example.Criteria criteria = condition.createCriteria();
-                criteria.andEqualTo("rId",r_id);
-                List<UserRole> urList= userRoleService.findByCondition(condition);
-                //1.2.循环删除用户组用户关系
-                for (UserRole ur:urList
-                ) {
-                    userRoleService.deleteById(ur.getrId());
-                }
-                //2.删除用户组角色
-                //2.1.查询用户组角色关系list
-                criteria=null;
-                condition=null;
-                System.gc();
-                Condition condition2=new Condition(UsergroupRole.class);
-                Example.Criteria criteria2 = condition2.createCriteria();
-                criteria2.andEqualTo("rId",r_id);
-                List<UsergroupRole> ugrList= usergroupRoleService.findByCondition(condition2);
-                //2.2.循环删除
-                for (UsergroupRole ur:ugrList
-                ) {
-                    usergroupRoleService.deleteById(ur.getUgrId());
-                }
-                //3.删除角色
-                roleService.deleteById(r_id);
-            }else{
-                optype="非法";
-                return  ResultGenerator.genFailResult("type类型参数不对，只能是1/2");
+            optype="删除";
+            //级联删除角色
+            //1.删除角色用户关系
+            //1.1.查询该角色对应的的角色用户关系list
+            Condition condition=new Condition(UserRole.class);
+            tk.mybatis.mapper.entity.Example.Criteria criteria = condition.createCriteria();
+            criteria.andEqualTo("rId",r_id);
+            List<UserRole> urList= userRoleService.findByCondition(condition);
+            //1.2.循环删除用户组用户关系
+            for (UserRole ur:urList
+            ) {
+                userRoleService.deleteById(ur.getrId());
             }
+            //2.删除用户组角色
+            //2.1.查询用户组角色关系list
+            criteria=null;
+            condition=null;
+            System.gc();
+            Condition condition2=new Condition(UsergroupRole.class);
+            Example.Criteria criteria2 = condition2.createCriteria();
+            criteria2.andEqualTo("rId",r_id);
+            List<UsergroupRole> ugrList= usergroupRoleService.findByCondition(condition2);
+            //2.2.循环删除
+            for (UsergroupRole ur:ugrList
+            ) {
+                usergroupRoleService.deleteById(ur.getUgrId());
+            }
+            //3.删除角色
+            roleService.deleteById(r_id);
         }catch (Exception e) {
             e.printStackTrace();
             return ResultGenerator.genFailResult(e.getMessage());
         }
-        return ResultGenerator.genSuccessResult(optype+"操作用户组成功");
+        return ResultGenerator.genSuccessResult(optype+"操作角色成功");
     }
 }

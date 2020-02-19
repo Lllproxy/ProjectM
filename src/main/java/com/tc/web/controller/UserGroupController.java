@@ -128,57 +128,43 @@ public class UserGroupController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/delete/{type}/{ug_id}")
+    @DeleteMapping("/delete/{ug_id}")
     @ApiOperation(httpMethod="DELETE",value="删除用户组", notes="默认DELETE方法 ug_id不能为空,type=1 禁用 type=2 物理级联删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "{type}", value = "删除类型", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "{ug_id}", value = "用户组id", required = true, dataType = "String")
+            @ApiImplicitParam(name = "ug_id", value = "用户组id", required = true, dataType = "String")
     })
-    public Result delete(@PathVariable Integer type,@PathVariable String  ug_id) {
+    public Result delete(@PathVariable String  ug_id) {
         String optype;
         try {
-            if (type.equals(1)){
-                optype="禁用";
-                //禁用用户组
-                //1.查询改用户
-                Usergroup ug=usergroupService.findById(ug_id);
-                //2.设置禁用
-                ug.setIsWork(2);
-                usergroupService.update(ug);
-            }else if (type.equals(2)){
-                optype="删除";
-                //级联删除用户组
-                //1.删除用户组用户
-                //1.1.查询该用户组对应的的用户组用户关系list
-                Condition condition=new Condition(UsergroupUser.class);
-                Example.Criteria criteria = condition.createCriteria();
-                criteria.andEqualTo("ugId",ug_id);
-                List<UsergroupUser> uguList= usergroupUserService.findByCondition(condition);
-                //1.2.循环删除用户组用户关系
-                for (UsergroupUser ugu:uguList
-                     ) {
-                    usergroupUserService.deleteById(ugu.getUgId());
-                }
-                //2.删除用户组角色
-                //2.1.查询用户组角色关系list
-                criteria=null;
-                condition=null;
-                System.gc();
-                Condition condition2=new Condition(UsergroupRole.class);
-                Example.Criteria criteria2 = condition2.createCriteria();
-                criteria2.andEqualTo("ugId",ug_id);
-                List<UsergroupRole> ugrList= usergroupRoleService.findByCondition(condition2);
-                //2.2.循环删除
-                for (UsergroupRole ugr:ugrList
-                ) {
-                    usergroupRoleService.deleteById(ugr.getUgId());
-                }
-                //3.删除用户组
-                usergroupService.deleteById(ug_id);
-            }else{
-                optype="非法";
-                return  ResultGenerator.genFailResult("type类型参数不对，只能是1/2");
+            optype="删除";
+            //级联删除用户组
+            //1.删除用户组用户
+            //1.1.查询该用户组对应的的用户组用户关系list
+            Condition condition=new Condition(UsergroupUser.class);
+            Example.Criteria criteria = condition.createCriteria();
+            criteria.andEqualTo("ugId",ug_id);
+            List<UsergroupUser> uguList= usergroupUserService.findByCondition(condition);
+            //1.2.循环删除用户组用户关系
+            for (UsergroupUser ugu:uguList
+            ) {
+                usergroupUserService.deleteById(ugu.getUgId());
             }
+            //2.删除用户组角色
+            //2.1.查询用户组角色关系list
+            criteria=null;
+            condition=null;
+            System.gc();
+            Condition condition2=new Condition(UsergroupRole.class);
+            Example.Criteria criteria2 = condition2.createCriteria();
+            criteria2.andEqualTo("ugId",ug_id);
+            List<UsergroupRole> ugrList= usergroupRoleService.findByCondition(condition2);
+            //2.2.循环删除
+            for (UsergroupRole ugr:ugrList
+            ) {
+                usergroupRoleService.deleteById(ugr.getUgId());
+            }
+            //3.删除用户组
+            usergroupService.deleteById(ug_id);
         }catch (Exception e) {
             e.printStackTrace();
             return ResultGenerator.genFailResult(e.getMessage());

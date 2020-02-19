@@ -145,24 +145,15 @@ public class UserInfoController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/delete/{type}/{u_id}")
-    @ApiOperation(httpMethod="DELETE",value="删除用户组", notes="默认DELETE方法 u_id不能为空,type=1 禁用 type=2 物理级联删除")
+    @DeleteMapping("/delete/{u_id}")
+    @ApiOperation(httpMethod="DELETE",value="删除用户组", notes="默认DELETE方法 u_id不能为空 物理级联删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "{type}", value = "删除类型", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "{u_id}", value = "用户组id", required = true, dataType = "String")
     })
-    public Result delete(@PathVariable Integer type,@PathVariable String  u_id) {
+    public Result delete(@PathVariable String  u_id) {
         String optype;
         try {
-            if (type.equals(1)){
-                optype="禁用";
-                //禁用用户组
-                //1.查询改用户
-                UserInfo ug=userInfoService.findById(u_id);
-                //2.设置禁用
-                ug.setIsWork(2);
-                userInfoService.update(ug);
-            }else if (type.equals(2)){
+            {
                 optype="删除";
                 //级联删除用户组
                 //1.删除用户组用户
@@ -192,14 +183,11 @@ public class UserInfoController {
                 }
                 //3.删除用户
                 userInfoService.deleteById(u_id);
-            }else{
-                optype="非法";
-                return  ResultGenerator.genFailResult("type类型参数不对，只能是1/2");
             }
         }catch (Exception e) {
             e.printStackTrace();
             return ResultGenerator.genFailResult(e.getMessage());
         }
-        return ResultGenerator.genSuccessResult(optype+"操作用户组成功");
+        return ResultGenerator.genSuccessResult(optype+"操作用户成功");
     }
 }

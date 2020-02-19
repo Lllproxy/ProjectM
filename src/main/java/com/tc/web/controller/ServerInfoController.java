@@ -102,47 +102,33 @@ public class ServerInfoController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/delete/{type}/{s_id}")
-    @ApiOperation(httpMethod="DELETE",value="删除服务", notes="默认DELETE方法 s_id不能为空,type=1 禁用 type=2 物理级联删除")
+    @DeleteMapping("/delete/{s_id}")
+    @ApiOperation(httpMethod="DELETE",value="删除服务", notes="默认DELETE方法 s_id不能为空, 物理级联删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "{type}", value = "删除类型", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "{s_id}", value = "用户组id", required = true, dataType = "String")
     })
-    public Result delete(@PathVariable Integer type,@PathVariable String  s_id) {
+    public Result delete(@PathVariable String  s_id) {
         String optype;
         try {
-            if (type.equals(1)){
-                optype="禁用";
-                //禁用服务
-                //1.查询该服务
-                ServerInfo ser=serverInfoService.findById(s_id);
-                //2.设置禁用
-                ser.setsStatus(2);
-                serverInfoService.update(ser);
-            }else if (type.equals(2)){
-                optype="删除";
-                //级联删除服务
-                //1.删除服务权限
-                //1.1.查询该服务对应的的服务权限关系list
-                Condition condition=new Condition(PowerServer.class);
-                Example.Criteria criteria = condition.createCriteria();
-                criteria.andEqualTo("sId",s_id);
-                List<PowerServer> uguList= powerServerService.findByCondition(condition);
-                //1.2.循环删除用户组用户关系
-                for (PowerServer ugu:uguList
-                ) {
-                    powerServerService.deleteById(ugu.getPsId());
-                }
-                //2.删除服务
-                serverInfoService.deleteById(s_id);
-            }else{
-                optype="非法";
-                return  ResultGenerator.genFailResult("type类型参数不对，只能是1/2");
+            optype="删除";
+            //级联删除服务
+            //1.删除服务权限
+            //1.1.查询该服务对应的的服务权限关系list
+            Condition condition=new Condition(PowerServer.class);
+            Example.Criteria criteria = condition.createCriteria();
+            criteria.andEqualTo("sId",s_id);
+            List<PowerServer> uguList= powerServerService.findByCondition(condition);
+            //1.2.循环删除用户组用户关系
+            for (PowerServer ugu:uguList
+            ) {
+                powerServerService.deleteById(ugu.getPsId());
             }
+            //2.删除服务
+            serverInfoService.deleteById(s_id);
         }catch (Exception e) {
             e.printStackTrace();
             return ResultGenerator.genFailResult(e.getMessage());
         }
-        return ResultGenerator.genSuccessResult(optype+"操作用户组成功");
+        return ResultGenerator.genSuccessResult(optype+"操作服务成功");
     }
 }

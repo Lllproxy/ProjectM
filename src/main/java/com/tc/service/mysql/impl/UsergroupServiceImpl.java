@@ -28,4 +28,9 @@ public class UsergroupServiceImpl extends AbstractService<Usergroup> implements 
     public Usergroup findById(Integer id) {
         return null;
     }
+
+    @Override
+    public Usergroup findById(String id) {
+        return usergroupMapper.selectByPrimaryKey(id);
+    }
 }

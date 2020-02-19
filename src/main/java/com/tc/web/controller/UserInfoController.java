@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.tc.model.mysql.UserInfo;
 import com.tc.service.mysql.UserInfoService;
 import com.tc.service.mysql.UserRoleService;
+import com.tc.service.mysql.UsergroupService;
 import com.tc.service.mysql.UsergroupUserService;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
@@ -35,6 +36,9 @@ public class UserInfoController {
     @Resource
     private UsergroupUserService usergroupUserService;
 
+    @Resource
+    private UsergroupService usergroupService;
+
 
     @GetMapping("/{id}")
     @ApiOperation(httpMethod="GET",value="", notes="")
@@ -60,9 +64,16 @@ public class UserInfoController {
     }
 
     @PostMapping("/add")
-    @ApiOperation(httpMethod="POST",value="新增用户", notes="{u_name必传 is_work 默认 1-启用,password 密码}")
+    @ApiOperation(httpMethod="POST",value="新增用户", notes="{u_name必传 is_work 默认 1-启用,password 密码,ug_id 用户组id}")
     public Result add(@RequestBody  @ApiParam(name = "data",value ="新增json" , required = true) JSONObject data) {
         try {
+
+            if(null!=data.get("ug_id")&&!"".equals(data.get("ug_id").toString())){
+                Usergroup ug=usergroupService.findById(data.get("ug_id").toString());
+                if (null==ug){
+                    return  ResultGenerator.genFailResult("未匹配到相应的用户组信息");
+                }
+            }
             String uId=UUID.randomUUID().toString();
             if(null==data.get("u_name")||"".equals(data.get("u_name").toString())){
                 return  ResultGenerator.genFailResult("u_name必传递");
@@ -74,6 +85,16 @@ public class UserInfoController {
             userInfo.setuName(data.get("u_name").toString());
             userInfo.setuPassword(null==data.get("password")?"123456":data.get("password").toString());
             userInfoService.save(userInfo);
+
+            //添加用户组用户信息
+            if(null!=data.get("ug_id")&&!"".equals(data.get("ug_id").toString())) {
+                UsergroupUser usergroupUser=new UsergroupUser();
+                usergroupUser.setIsWork(1);
+                usergroupUser.setUgId(data.get("ug_id").toString());
+                usergroupUser.setuId(uId);
+                usergroupUser.setUguId(UUID.randomUUID().toString());
+                usergroupUserService.save(usergroupUser);
+            }
         }catch (Exception e) {
             e.printStackTrace();
             return ResultGenerator.genFailResult(e.getMessage());

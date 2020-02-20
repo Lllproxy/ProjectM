@@ -11,7 +11,9 @@ import javax.annotation.Resource;
 
 
 /**
- * Created by bocheng.luo on 2020/02/11.
+ *
+ * @author bocheng.luo
+ * @date 2020/02/11
  */
 @Service
 @Transactional
@@ -19,13 +21,18 @@ public class UsergroupUserServiceImpl extends AbstractService<UsergroupUser> imp
     @Resource
     private UsergroupUserMapper usergroupUserMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public UsergroupUser findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//        usergroupUserMapper.deleteByPrimaryKey(id);
+//    }
+//
+//    @Override
+//    public UsergroupUser findById(Integer id) {
+//        return usergroupUserMapper.selectByPrimaryKey(id);
+//    }
+//
+//    @Override
+//    public UsergroupUser findById(String  id) {
+//        return usergroupUserMapper.selectByPrimaryKey(id);
+//    }
 }

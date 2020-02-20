@@ -19,13 +19,13 @@ public class UsergroupRoleServiceImpl extends AbstractService<UsergroupRole> imp
     @Resource
     private UsergroupRoleMapper usergroupRoleMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public UsergroupRole findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public UsergroupRole findById(Integer id) {
+//        return null;
+//    }
 }

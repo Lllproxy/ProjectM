@@ -19,18 +19,18 @@ public class UsergroupServiceImpl extends AbstractService<Usergroup> implements 
     @Resource
     private UsergroupMapper usergroupMapper;
 
-    @Override
-    public void deleteById(String id) {
-        usergroupMapper.deleteById(id);
-    }
-
-    @Override
-    public Usergroup findById(Integer id) {
-        return null;
-    }
-
-    @Override
-    public Usergroup findById(String id) {
-        return usergroupMapper.selectByPrimaryKey(id);
-    }
+//    @Override
+//    public void deleteById(String id) {
+//        usergroupMapper.deleteById(id);
+//    }
+//
+//    @Override
+//    public Usergroup findById(Integer id) {
+//        return null;
+//    }
+//
+//    @Override
+//    public Usergroup findById(String id) {
+//        return usergroupMapper.selectByPrimaryKey(id);
+//    }
 }

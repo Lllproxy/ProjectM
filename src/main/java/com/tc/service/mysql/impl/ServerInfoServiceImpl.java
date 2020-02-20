@@ -18,14 +18,14 @@ import javax.annotation.Resource;
 public class ServerInfoServiceImpl extends AbstractService<ServerInfo> implements ServerInfoService {
     @Resource
     private ServerInfoMapper serverInfoMapper;
-
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public ServerInfo findById(Integer id) {
-        return null;
-    }
+//
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public ServerInfo findById(Integer id) {
+//        return null;
+//    }
 }

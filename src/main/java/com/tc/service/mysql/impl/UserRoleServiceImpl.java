@@ -11,7 +11,9 @@ import javax.annotation.Resource;
 
 
 /**
- * Created by bocheng.luo on 2020/02/11.
+ *
+ * @author bocheng.luo
+ * @date 2020/02/11
  */
 @Service
 @Transactional
@@ -19,13 +21,13 @@ public class UserRoleServiceImpl extends AbstractService<UserRole> implements Us
     @Resource
     private UserRoleMapper userRoleMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public UserRole findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//        userRoleMapper.deleteByPrimaryKey(id);
+//    }
+//
+//    @Override
+//    public UserRole findById(Integer id) {
+//        return null;
+//    }
 }

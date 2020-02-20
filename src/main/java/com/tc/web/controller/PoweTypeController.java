@@ -29,7 +29,7 @@ public class PoweTypeController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         PoweType poweType = poweTypeService.findById(id);
         return ResultGenerator.genSuccessResult(poweType);
     }

@@ -19,13 +19,13 @@ public class VerifyLogServiceImpl extends AbstractService<VerifyLog> implements 
     @Resource
     private VerifyLogMapper verifyLogMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public VerifyLog findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public VerifyLog findById(Integer id) {
+//        return null;
+//    }
 }

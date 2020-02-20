@@ -40,7 +40,7 @@ public class WebInfoController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         WebInfo webInfo = webInfoService.findById(id);
         return ResultGenerator.genSuccessResult(webInfo);
     }

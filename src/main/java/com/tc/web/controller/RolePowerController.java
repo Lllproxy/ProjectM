@@ -29,7 +29,7 @@ public class RolePowerController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         RolePower rolePower = rolePowerService.findById(id);
         return ResultGenerator.genSuccessResult(rolePower);
     }

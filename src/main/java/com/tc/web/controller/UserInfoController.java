@@ -103,7 +103,7 @@ public class UserInfoController {
     }
 
     @PostMapping("/update")
-    @ApiOperation(httpMethod="POST",value="跟新用户信息", notes="{u_id:用户id（必传）,password: 密码,u_name: 用户名}")
+    @ApiOperation(httpMethod="POST",value="更新用户信息", notes="{u_id:用户id（必传）,password: 密码,u_name: 用户名}")
     public Result update(@RequestBody  @ApiParam(name = "data",value ="更新json" , required = true) JSONObject data) {
         try {
             UserInfo userInfo = new UserInfo();
@@ -146,9 +146,9 @@ public class UserInfoController {
     }
 
     @DeleteMapping("/delete/{u_id}")
-    @ApiOperation(httpMethod="DELETE",value="删除用户组", notes="默认DELETE方法 u_id不能为空 物理级联删除")
+    @ApiOperation(httpMethod="DELETE",value="删除用户", notes="默认DELETE方法 u_id不能为空 物理级联删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "{u_id}", value = "用户组id", required = true, dataType = "String")
+            @ApiImplicitParam(name = "u_id", value = "用户id", required = true, dataType = "String")
     })
     public Result delete(@PathVariable String  u_id) {
         String optype;

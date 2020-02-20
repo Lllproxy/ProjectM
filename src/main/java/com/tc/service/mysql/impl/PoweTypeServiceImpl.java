@@ -19,13 +19,13 @@ public class PoweTypeServiceImpl extends AbstractService<PoweType> implements Po
     @Resource
     private PoweTypeMapper poweTypeMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public PoweType findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public PoweType findById(Integer id) {
+//        return null;
+//    }
 }

@@ -19,13 +19,13 @@ public class PowerServiceImpl extends AbstractService<Power> implements PowerSer
     @Resource
     private PowerMapper powerMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public Power findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public Power findById(Integer id) {
+//        return null;
+//    }
 }

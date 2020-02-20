@@ -19,13 +19,13 @@ public class RolePowerServiceImpl extends AbstractService<RolePower> implements 
     @Resource
     private RolePowerMapper rolePowerMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public RolePower findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public RolePower findById(Integer id) {
+//        return null;
+//    }
 }

@@ -43,7 +43,7 @@ public class UserGroupController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
     })
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         Usergroup usergroup = usergroupService.findById(id);
         return ResultGenerator.genSuccessResult(usergroup);
     }
@@ -112,7 +112,6 @@ public class UserGroupController {
                     usergroup.setUgName(ug_name);
                 }
             }
-            String ug_name=data.get("ug_name").toString();
 
             //设置是否启用
             if (null!=data.get("is_work")){

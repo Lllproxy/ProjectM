@@ -19,13 +19,13 @@ public class WebInfoServiceImpl extends AbstractService<WebInfo> implements WebI
     @Resource
     private WebInfoMapper webInfoMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public WebInfo findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public WebInfo findById(Integer id) {
+//        return null;
+//    }
 }

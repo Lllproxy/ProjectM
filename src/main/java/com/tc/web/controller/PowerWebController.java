@@ -29,7 +29,7 @@ public class PowerWebController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         PowerWeb powerWeb = powerWebService.findById(id);
         return ResultGenerator.genSuccessResult(powerWeb);
     }

@@ -19,13 +19,13 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
     @Resource
     private RoleMapper roleMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public Role findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public Role findById(Integer id) {
+//        return null;
+//    }
 }

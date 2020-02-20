@@ -19,13 +19,13 @@ public class UserPowerServiceImpl extends AbstractService<UserPower> implements 
     @Resource
     private UserPowerMapper userPowerMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public UserPower findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public UserPower findById(Integer id) {
+//        return null;
+//    }
 }

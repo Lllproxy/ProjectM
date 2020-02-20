@@ -19,13 +19,13 @@ public class PowerWebServiceImpl extends AbstractService<PowerWeb> implements Po
     @Resource
     private PowerWebMapper powerWebMapper;
 
-    @Override
-    public void deleteById(String id) {
-
-    }
-
-    @Override
-    public PowerWeb findById(Integer id) {
-        return null;
-    }
+//    @Override
+//    public void deleteById(String id) {
+//
+//    }
+//
+//    @Override
+//    public PowerWeb findById(Integer id) {
+//        return null;
+//    }
 }

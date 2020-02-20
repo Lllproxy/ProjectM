@@ -36,7 +36,7 @@ public class ServerInfoController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         ServerInfo serverInfo = serverInfoService.findById(id);
         return ResultGenerator.genSuccessResult(serverInfo);
     }

@@ -29,7 +29,7 @@ public class UsergroupUserController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
-    public Result detail(@PathVariable Integer id) {
+    public Result detail(@PathVariable String id) {
         UsergroupUser usergroupUser = usergroupUserService.findById(id);
         return ResultGenerator.genSuccessResult(usergroupUser);
     }

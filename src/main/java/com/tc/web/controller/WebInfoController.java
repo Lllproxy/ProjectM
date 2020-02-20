@@ -120,7 +120,7 @@ public class WebInfoController {
             //1.删除服务权限
 
             //1.1.查询该服务对应的的服务权限关系list
-            Condition condition=new Condition(PowerServer.class);
+            Condition condition=new Condition(PowerWeb.class);
             Example.Criteria criteria = condition.createCriteria();
             criteria.andEqualTo("wId",w_id);
             List<PowerWeb> uguList= powerWebService.findByCondition(condition);

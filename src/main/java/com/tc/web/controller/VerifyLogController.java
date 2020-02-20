@@ -165,6 +165,25 @@ public class VerifyLogController {
                         //如果用户被禁用
                         verifyLog.setVrDec("用户被禁用");
                     } else {
+                        //检查资源是否在线
+                        Power pp = powerServices.findBy("pId", p_id);
+                        if ("s".equals(pp.getpType())) {
+                            ServerInfo serverInfo = serverInfoService.findBy("sID", pp.getpId());
+                            if (2 == serverInfo.getsStatus()) {
+                                verifyLog.setVrDec("权限离线");
+                                break lab;
+                            }
+                        } else if ("w".equals(pp.getpType())) {
+                            WebInfo webInfo = webInfoService.findBy("wId", pp.getpId());
+                            if (1 == webInfo.getwStatus()) {
+                                verifyLog.setVrDec("权限离线");
+                                break lab;
+                            }
+                        } else {
+                            Exception e = new Exception("发现权限类型异常");
+                            e.printStackTrace();
+                            break lab;
+                        }
                         //2.查询用户和权限是否直接关联
                         Condition condition0 = new Condition(UserPower.class);
                         Example.Criteria criteria0 = condition0.createCriteria();
@@ -173,29 +192,10 @@ public class VerifyLogController {
                         for (UserPower up : upL
                         ) {
                             if (1 == up.getIsWork()) {
-                                //有效的用户权限
-                                Power pp = powerServices.findBy("pId", up.getpId());
-                                if ("s".equals(pp.getpType())) {
-                                    ServerInfo serverInfo = serverInfoService.findBy("sID", pp.getpId());
-                                    if (1 == serverInfo.getsStatus()) {
-                                        v_result = 1;
-                                        verifyLog.setVrDec("权限鉴定通过");
-                                        break lab;
-                                    }
-                                } else if ("w".equals(pp.getpType())) {
-                                    WebInfo webInfo = webInfoService.findBy("wId", pp.getpId());
-                                    if (1 == webInfo.getwStatus()) {
-                                        v_result = 1;
-                                        verifyLog.setVrDec("权限鉴定通过");
-                                        break lab;
-                                    }
-                                } else {
-                                    Exception e = new Exception("发现权限类型异常");
-                                    e.printStackTrace();
-                                }
+                                v_result = 1;
+                                verifyLog.setVrDec("权限鉴定通过");
+                                break lab;
                             }
-                            up.getpId();
-
                         }
                         //2.用户状态正常，接着验证用户组
                         //2.1.查询用户对应的用户组
@@ -211,7 +211,6 @@ public class VerifyLogController {
                             boolean haveRoleIsWork = false;
                             boolean haveRolePower = false;
                             boolean haveRolePowerIsWork = false;
-                            boolean havePowerOnLine = false;
                             //获取用户组对应的角色
                             for (UsergroupUser uu : ugL
                             ) {
@@ -241,33 +240,13 @@ public class VerifyLogController {
                                             List<RolePower> rpL = rolePowerService.findByCondition(condition3);
                                             if (rpL.size() > 0) {
                                                 haveRolePower = true;
-
                                                 for (RolePower rp : rpL
                                                 ) {
                                                     if (1 == rp.getIsWork()) {
                                                         haveRolePowerIsWork = true;
-                                                        Power power = powerServices.findBy("pId", p_id);
-                                                        power.getpId();
-                                                        if ("s".equals(power.getpType())) {
-                                                            ServerInfo serverInfo = serverInfoService.findBy("sID", power.getpId());
-                                                            if (1 == serverInfo.getsStatus()) {
-                                                                havePowerOnLine = true;
-                                                                v_result = 1;
-                                                                verifyLog.setVrDec("权限鉴定通过");
-                                                                break lab;
-                                                            }
-                                                        } else if ("w".equals(power.getpType())) {
-                                                            WebInfo webInfo = webInfoService.findBy("wId", power.getpId());
-                                                            if (1 == webInfo.getwStatus()) {
-                                                                v_result = 1;
-                                                                verifyLog.setVrDec("权限鉴定通过");
-                                                                havePowerOnLine = true;
-                                                                break lab;
-                                                            }
-                                                        } else {
-                                                            Exception e = new Exception("发现权限类型异常");
-                                                            e.printStackTrace();
-                                                        }
+                                                        v_result = 1;
+                                                        verifyLog.setVrDec("权限鉴定通过");
+                                                        break lab;
                                                     }
                                                 }
                                             }
@@ -287,9 +266,6 @@ public class VerifyLogController {
                                 verifyLog.setVrDec("用户所属全部用户组被禁用");
                             }
 
-                            if (!havePowerOnLine) {
-                                verifyLog.setVrDec("用户没有在线的该权限");
-                            }
 
                             if (!haveRole) {
                                 verifyLog.setVrDec("用户没有对应的角色");
@@ -302,7 +278,6 @@ public class VerifyLogController {
 
                     }
                 } else {
-
                     return ResultGenerator.genFailResult("未找到对应的用户，请确认用户是否注册");
                 }
             }

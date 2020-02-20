@@ -76,7 +76,7 @@ public class VerifyLogController {
             @ApiImplicitParam(name = "u_name", value = "用户名称", dataType = "int")
 	}) 
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size
-    ,@RequestParam String ug_id,@RequestParam String u_name) {
+    ,String ug_id,String u_name) {
         List<VerifyLog> list=new ArrayList<>();
         PageHelper.startPage(page, size);
         //u_name对应的用户集合
@@ -100,7 +100,7 @@ public class VerifyLogController {
         if (u_name!=null&&!"".equals(u_name)){
             Condition condition=new Condition(UserInfo.class);
             Example.Criteria criteria=condition.createCriteria();
-            criteria.andLike("uName",u_name);
+            criteria.andLike("uName","%"+u_name+"%");
             List<UserInfo> listU=userInfoService.findByCondition(condition);
             for (UserInfo u:listU
             ) {

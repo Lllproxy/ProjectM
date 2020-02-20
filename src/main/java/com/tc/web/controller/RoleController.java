@@ -59,7 +59,7 @@ public class RoleController {
     }
 
     @PostMapping("/add")
-    @ApiOperation(httpMethod="POST",value="新增角色", notes="{r_name:角色名称（必传）,is_work:是否启用（默认1-启用）}")
+    @ApiOperation(httpMethod="POST",value="新增角色", notes="{r_name:角色名称（必传）,is_work:是否启用（默认1-启用）,pr_id :父角色id}")
     public Result add(@RequestBody  @ApiParam(name = "data",value ="新增json" , required = true) JSONObject data) {
         try {
             String rId= UUID.randomUUID().toString();
@@ -68,8 +68,12 @@ public class RoleController {
             }
             Role role = new Role();
             //设置是否启用
-            role.setIsWork(null==data.get("is_work")?1:Integer.valueOf(data.get("password").toString()));
-            role.setpRId(rId);
+            role.setIsWork(null==data.get("is_work")?1:Integer.valueOf(data.get("is_work").toString()));
+            if (null!=data.get("pr_id")&&!"".equals(data.get("pr_id").toString())){
+                //后期扩展判断父角色是否存咋。联动到授权的判断TODO
+                role.setpRId(data.get("pr_id").toString());
+            }
+            role.setrId(rId);
             role.setrName(data.get("r_name").toString());
             roleService.save(role);
         }catch (Exception e) {
@@ -94,7 +98,7 @@ public class RoleController {
             //设置用户组名
             if (null!=data.get("r_name")){
                 String r_name=data.get("r_name").toString();
-                Role f_r=roleService.findBy("rName",r_name);
+                Role f_r=roleService.findBy("r_name",r_name);
                 if(null!=f_r){
                     if (!f_r.getrId().equals(rId)){
                         return ResultGenerator.genFailResult("r_name已存在，请更换名称");

@@ -1,5 +1,6 @@
 package com.tc.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tc.core.Result;
 import com.tc.core.ResultGenerator;
 import com.tc.model.mysql.*;
@@ -16,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
 *
@@ -99,5 +101,39 @@ public class UsergroupRoleController {
         }
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @PostMapping("/add")
+    @ApiOperation(httpMethod="POST",value="新增用户组角色关系", notes="{ug_id：用户组id（必传）, r_id: 角色id（必传）,is_work 默认 1-启用}")
+    public Result add(@RequestBody  @ApiParam(name = "data",value ="新增json" , required = true) JSONObject data) {
+        try {
+            String uguId= UUID.randomUUID().toString();
+            if(null==data.get("r_id")||"".equals(data.get("r_id").toString())){
+                return  ResultGenerator.genFailResult("r_id必传递");
+            }
+            if(null==data.get("ug_id")||"".equals(data.get("ug_id").toString())){
+                return  ResultGenerator.genFailResult("ug_id必传递");
+            }
+            Usergroup ug=usergroupService.findById(data.get("ug_id").toString());
+            if (null==ug){
+                return  ResultGenerator.genFailResult("未匹配到相应的用户组信息");
+            }
+
+            Role u=roleService.findById(data.get("r_id").toString());
+            if (null==u){
+                return  ResultGenerator.genFailResult("未匹配到相应的角色信息");
+            }
+            UsergroupRole ugu = new UsergroupRole();
+            //设置是否启用
+            ugu.setIsWork(null==data.get("is_work")?1:Integer.valueOf(data.get("is_work").toString()));
+            ugu.setrId(data.get("r_id").toString());
+            ugu.setUgId(data.get("ug_id").toString());
+            ugu.setUgrId(uguId);
+            usergroupRoleService.save(ugu);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult(e.getMessage());
+        }
+        return ResultGenerator.genSuccessResult();
     }
 }

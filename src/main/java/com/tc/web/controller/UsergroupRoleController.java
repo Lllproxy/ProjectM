@@ -38,7 +38,7 @@ public class UsergroupRoleController {
 
 
     @GetMapping("/{id}")
-    @ApiOperation(httpMethod="GET",value="", notes="")
+    @ApiOperation(httpMethod="GET",value="查询用户组角色关系详细", notes="id用户组角色关系id")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "", required = true, dataType = "String")
 	}) 
@@ -47,8 +47,8 @@ public class UsergroupRoleController {
         return ResultGenerator.genSuccessResult(usergroupRole);
     }
 
-    @GetMapping
-    @ApiOperation(httpMethod="GET",value="", notes="")
+    @GetMapping("/list")
+    @ApiOperation(httpMethod="GET",value="查询用户组角色关系列表", notes="page,size必传，r_name角色名称，ug_name用户组名 支持模糊查询")
 	@ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", required = true, dataType = "int"),
             @ApiImplicitParam(name = "size", value = "页大小", required = true, dataType = "int"),

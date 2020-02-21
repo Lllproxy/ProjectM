@@ -136,4 +136,49 @@ public class UsergroupRoleController {
         }
         return ResultGenerator.genSuccessResult();
     }
+
+    @PostMapping("/update")
+    @ApiOperation(httpMethod="POST",value="更新用户组角色关系信息", notes="{ugr_id:关系id（必传）,ug_id:用户组id,r_id: 角色id,is_work:是否启用}")
+    public Result update(@RequestBody  @ApiParam(name = "data",value ="更新json" , required = true) JSONObject data) {
+        try {
+
+            if(null==data.get("ugu_id")||"".equals(data.get("ugu_id").toString())){
+                return  ResultGenerator.genFailResult("ugu_id必传递");
+            }
+            //查询用户组用户关系
+            UsergroupRole ugr=usergroupRoleService.findById(data.get("ugr_id").toString());
+            //设置用户组id
+            if(null!=data.get("r_id")&&!"".equals(data.get("r_id").toString())){
+                ugr.setrId(data.get("r_id").toString());
+            }
+            //设置是否启用
+            if (null!=data.get("is_work")&&!"".equals(data.get("is_work").toString())){
+                Integer isWork=data.getInteger("is_work");
+                ugr.setIsWork(isWork);
+            }
+            usergroupRoleService.update(ugr);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult(e.getMessage());
+        }
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @DeleteMapping("/delete/{ugr_id}")
+    @ApiOperation(httpMethod="DELETE",value="删除用户组角色关系", notes="默认DELETE方法 ugr_id不能为空 物理级联删除")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ugr_id", value = "用户组角色关系id", required = true, dataType = "String")
+    })
+    public Result delete(@PathVariable String  ugr_id) {
+        String optype;
+        try {
+            optype="删除";
+            //3.删除用户
+            usergroupRoleService.deleteById(ugr_id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult(e.getMessage());
+        }
+        return ResultGenerator.genSuccessResult(optype+"操作用户组角色关系成功");
+    }
 }

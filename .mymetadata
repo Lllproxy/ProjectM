@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="tc-rbac-service"
+  name="ProjectM"
   id="myeclipse.1500861366663"
   context-root="/portal-restapi"
   j2ee-spec="1.7"
-  archive="tc-rbac-service.war">
+  archive="ProjectM.war">
   <attributes>
     <attribute name="webrootdir" value="src/main/webapp" />
   </attributes>

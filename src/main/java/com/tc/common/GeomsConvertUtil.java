@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
-import com.tc.constant.DConstant;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;

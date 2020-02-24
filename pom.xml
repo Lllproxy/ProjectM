@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tc.rbac</groupId>
-    <artifactId>tc-rbac-service</artifactId>
+    <artifactId>ProjectM</artifactId>
 
     <version>0.0.1</version>
-    <name>tc-rbac-service</name>
+    <name>ProjectM</name>
     <url>http://maven.apache.org</url>
     <packaging>jar</packaging>
 

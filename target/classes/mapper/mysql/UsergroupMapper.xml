@@ -9,4 +9,9 @@
     <result column="ug_name" jdbcType="VARCHAR" property="ugName" />
     <result column="is_work" jdbcType="INTEGER" property="isWork" />
   </resultMap>
+
+  <!--根据id删除用户组信息-->
+  <delete id="deleteById" parameterType="Map">
+    delete from usergroup  where ug_id = #{id}
+  </delete>
 </mapper>

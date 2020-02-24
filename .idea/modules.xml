@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/tc-rbac-service.iml" filepath="$PROJECT_DIR$/tc-rbac-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProjectM.iml" filepath="$PROJECT_DIR$/ProjectM.iml" />
     </modules>
   </component>
 </project>

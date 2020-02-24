@@ -1,6 +1,5 @@
 package com.tc;
 
-import com.tc.common.DataDictionaryUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -26,7 +25,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Application extends WebMvcConfigurerAdapter {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-//        DataDictionaryUtil.loadData();
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {

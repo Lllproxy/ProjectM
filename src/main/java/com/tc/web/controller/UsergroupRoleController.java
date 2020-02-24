@@ -26,6 +26,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/usergroup/role")
+@Api(tags = "用户组角色关系管理")
 public class UsergroupRoleController {
     @Resource
     private UsergroupRoleService usergroupRoleService;

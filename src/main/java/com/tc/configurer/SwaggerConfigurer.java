@@ -13,6 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * SwaggerConfig
+ * @author robosen
  */
 @Configuration
 @EnableSwagger2
@@ -28,8 +29,8 @@ public class SwaggerConfigurer  {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("Tomapto RBAC权限系统")
-				.description("Tomapto RBAC权限系统-Restful Api")
+				.title("ProjectM 价值数据中心云平台")
+				.description("ProjectM 价值数据中心云平台-Restful Api")
 				.termsOfServiceUrl("").version("1.0").build();
 	}
 }

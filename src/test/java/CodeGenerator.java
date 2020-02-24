@@ -34,7 +34,7 @@ import static com.tc.core.ProjectConstant.*;
 public class CodeGenerator {
 	private static final String DBTYPE = "mysql";
     //JDBC配置，请修改为你项目的实际配置
-    private static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/power?characterEncoding=utf-8";
+    private static final String JDBC_URL = "jdbc:mysql://192.168.2.225:3306/share_db?characterEncoding=utf-8";
     private static final String JDBC_USERNAME = "root";
     private static final String JDBC_PASSWORD = "123456";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
@@ -56,7 +56,7 @@ public class CodeGenerator {
     private static final String MAPPER_PACKAGE = MYSQL_MAPPER_PACKAGE;
     
     public static void main(String[] args) {
-    	  genCode(new String[]{"user_power"});
+    	  genCode(new String[]{"share_info"});
 //    	  genCode(new String[]{"user_info","power","role",
 //                  "verify_log","web_info","server_info",
 //                  "power_web","power_server","powe_type",

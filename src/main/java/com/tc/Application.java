@@ -27,6 +27,9 @@ public class Application extends WebMvcConfigurerAdapter {
         SpringApplication.run(Application.class, args);
     }
     @Override
+    /**
+     * 解决跨域
+     */
     public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/**")

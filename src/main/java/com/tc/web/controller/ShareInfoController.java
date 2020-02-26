@@ -70,8 +70,9 @@ public class ShareInfoController {
             shareInfo.setShareName(map.get("share_name"));
             shareInfo.setShareType(map.get("share_type"));
             shareInfo.setShareUrl(map.get("share_url"));
+            shareInfoService.save(shareInfo);
         }
-        shareInfoService.save(sL);
+//        shareInfoService.save(sL);
         long end=System.currentTimeMillis();
         long total=end-sta;
         return ResultGenerator.genSuccessResult("初始化成功"+count+"条数据；总耗时"+total+"毫秒");

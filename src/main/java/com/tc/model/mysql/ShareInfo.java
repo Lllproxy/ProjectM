@@ -18,19 +18,47 @@ public class ShareInfo {
     @Column(name = "share_name")
     private String shareName;
 
+    public String getShareId() {
+        return shareId;
+    }
+
+    public String getShareType() {
+        return shareType;
+    }
+
+    public void setShareType(String shareType) {
+        this.shareType = shareType;
+    }
+
     /**
-     * 插入时间
+     * 交易所
      */
-    @Column(name = "insert_time")
-    private Date insertTime;
+    @Column(name = "share_type")
+    private String shareType;
+
+    /**
+     * 股票基金详细链接
+     */
+    @Column(name = "share_url")
+    private String shareUrl;
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
 
     /**
      * 获取股票/基金代码
      *
      * @return share_id - 股票/基金代码
+     * @param shareId
      */
-    public String getShareId() {
-        return shareId;
+    public String getShareId(String shareId) {
+        return this.shareId;
     }
 
     /**
@@ -60,21 +88,4 @@ public class ShareInfo {
         this.shareName = shareName;
     }
 
-    /**
-     * 获取插入时间
-     *
-     * @return insert_time - 插入时间
-     */
-    public Date getInsertTime() {
-        return insertTime;
-    }
-
-    /**
-     * 设置插入时间
-     *
-     * @param insertTime 插入时间
-     */
-    public void setInsertTime(Date insertTime) {
-        this.insertTime = insertTime;
-    }
 }

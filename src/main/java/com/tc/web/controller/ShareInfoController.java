@@ -32,6 +32,7 @@ public class ShareInfoController {
 	}) 
     public Result detail(@PathVariable Integer id) {
         ShareInfo shareInfo = shareInfoService.findById(id);
+        System.out.println("分支测试");
         return ResultGenerator.genSuccessResult(shareInfo);
     }
 

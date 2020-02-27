@@ -34,7 +34,7 @@ import static com.tc.core.ProjectConstant.*;
 public class CodeGenerator {
 	private static final String DBTYPE = "mysql";
     //JDBC配置，请修改为你项目的实际配置
-    private static final String JDBC_URL = "jdbc:mysql://192.168.2.225:3306/share_db?characterEncoding=utf-8";
+    private static final String JDBC_URL = "jdbc:mysql://49.235.60.22:3306/share_db?characterEncoding=utf-8";
     private static final String JDBC_USERNAME = "root";
     private static final String JDBC_PASSWORD = "123456";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
@@ -71,8 +71,8 @@ public class CodeGenerator {
         for (String tableName : tableNames) {
             //根据需求生成，不需要的注掉，模板有问题的话可以自己修改。
             genModelAndMapper(tableName);
-            genService(tableName);
-            genController(tableName);
+//            genService(tableName);
+//            genController(tableName);
         }
     }
 

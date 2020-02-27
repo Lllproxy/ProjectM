@@ -8,5 +8,7 @@
     <id column="share_id" jdbcType="VARCHAR" property="shareId" />
     <result column="share_name" jdbcType="VARCHAR" property="shareName" />
     <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="share_type" jdbcType="VARCHAR" property="shareType" />
+    <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
   </resultMap>
 </mapper>

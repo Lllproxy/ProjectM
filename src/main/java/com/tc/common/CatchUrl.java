@@ -138,20 +138,20 @@ public class CatchUrl {
                                 String rzu=li.children().first().ownText();
                                 String shareCode=rzu.substring(rzu.indexOf("(")+1,rzu.indexOf(")"));
                                 String shareName=rzu.substring(0,rzu.indexOf("("));
-                                String shareType="NULL";
+                                String shareHouse="NULL";
                                 if (shareUrl.contains("/sh")){
-                                    shareType="SH";
+                                    shareHouse="SH";
                                 }else if (shareUrl.contains("/sz")){
-                                    shareType="SZ";
+                                    shareHouse="SZ";
                                 }
                                 Map map =new HashMap();
                                 System.out.println("shareCode:   "+shareCode);
                                 System.out.println("shareName: "+shareName);
-                                System.out.println("shareType："+shareType);
+                                System.out.println("share_house："+shareHouse);
                                 System.out.println("shareUrl："+shareUrl);
                                 map.put("share_id",shareCode);
                                 map.put("share_name",shareName);
-                                map.put("share_type",shareType);
+                                map.put("share_house",shareHouse);
                                 map.put("share_url",shareUrl);
                                 rsmL.add(map);
                                 System.out.println("插入第 "+count+" 条数据");
@@ -165,9 +165,94 @@ public class CatchUrl {
     }
 
     public static void main(String[] args) {
-        String url="http://quote.eastmoney.com/stock_list.html";
-        String tag="ul";
+//        String url="http://quote.eastmoney.com/stock_list.html";
+//        String tag="ul";
+        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=600168";
+        String className="";
 //        String type="provincetr";
-        System.out.println(new CatchUrl().getShareInfo(url, tag));
+        System.out.println(new CatchUrl().getShareCompany(url, "tdBg"));
+    }
+
+    public List<Map<String, String>> getShareCompany(String url, String className) {
+        List<Map<String,String>> rsmL=new ArrayList<>();
+        int count=0;
+        //从网络上获取网页
+        Document document=getHtmlTextByUrl(url);
+        if (document!=null) {
+            //获取表单tbody元素内容;
+            Elements elements=getElementsByTag(document,"tbody");
+            for (Element el:elements
+                 ) {
+                if (el.toString().contains("tdBg")){
+//                    System.out.println("el==>   "+el.toString());
+//                    System.out.println("=============================================");
+//                    System.out.println("el.children==>   "+el.children().toString());
+//                    System.out.println("=============================================");
+                    Elements element=el.children().tagName("td");
+                    String[] sL=element.toString().replace("> <",">δ<").split("δ");
+                    List<String> rsL=new ArrayList<>();
+                    for (String st:sL
+                         ) {
+                        System.out.println(st);
+                        if (st.equals("<td>")||"</td>".equals(st)||"<td>\n</td>".equals(st)||"</td>\n<td>".equals(st)){
+                            System.out.println("移除无效标签");
+                        }else{
+                            System.out.println("添加到待处理数组");
+                            rsL.add(st);
+                        }
+                        System.out.println("=============================================");
+                    }
+                    //检验结果
+                    int countt =0;
+                    for (String sg:rsL
+                         ) {
+                        countt++;
+                        System.out.println(countt+"**************************");
+                        System.out.println(sg);
+                    }
+                }
+            }
+
+//
+//
+//            System.out.println(elements.spliterator());
+//            for(Element ul:elements){
+//                // 依次循环每个元素，也就是一个ul
+//                if(ul!=null){
+//                    System.out.println("ul  "+ul);
+//                    for(Element li:ul.children()){
+//                        // 一个ul的子元素li，li内包含a标签
+//                        System.out.println("li "+li);
+//                        if(li.children()!=null){
+//                            if (li.children().toString().contains("(")&&li.children().toString().contains(")")){
+//                                count++;
+//                                String shareUrl=li.children().first().attr("abs:href");
+//                                String rzu=li.children().first().ownText();
+//                                String shareCode=rzu.substring(rzu.indexOf("(")+1,rzu.indexOf(")"));
+//                                String shareName=rzu.substring(0,rzu.indexOf("("));
+//                                String shareHouse="NULL";
+//                                if (shareUrl.contains("/sh")){
+//                                    shareHouse="SH";
+//                                }else if (shareUrl.contains("/sz")){
+//                                    shareHouse="SZ";
+//                                }
+//                                Map map =new HashMap();
+//                                System.out.println("shareCode:   "+shareCode);
+//                                System.out.println("shareName: "+shareName);
+//                                System.out.println("share_house："+shareHouse);
+//                                System.out.println("shareUrl："+shareUrl);
+//                                map.put("share_id",shareCode);
+//                                map.put("share_name",shareName);
+//                                map.put("share_house",shareHouse);
+//                                map.put("share_url",shareUrl);
+//                                rsmL.add(map);
+//                                System.out.println("插入第 "+count+" 条数据");
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+        }
+        return rsmL;
     }
 }

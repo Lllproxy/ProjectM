@@ -1,11 +1,11 @@
 package com.tc.service.mysql;
-import com.tc.model.mysql.ShareInfo;
+import com.tc.model.mysql.ShareCompany;
 import com.tc.core.Service;
 
 
 /**
  * Created by bocheng.luo on 2020/02/27.
  */
-public interface ShareInfoService extends Service<ShareInfo> {
+public interface ShareCompanyService extends Service<ShareCompany> {
 
 }

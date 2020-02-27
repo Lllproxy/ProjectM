@@ -63,10 +63,10 @@ public class ShareInfoController {
             if (!"".equals(share_id)||null!=share_id){
                 criteria.andLike("shareId","%"+share_id+"%");
             }
-            if (!"".equals(share_id)||null!=share_id) {
+            if (!"".equals(share_type)||null!=share_type) {
                 criteria.andLike("shareType", "%" + share_type + "%");
             }
-            if (!"".equals(share_id)||null!=share_id) {
+            if (!"".equals(share_name)||null!=share_name) {
 
                 criteria.andLike("shareName", "%" + share_name + "%");
             }
@@ -76,7 +76,7 @@ public class ShareInfoController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @GetMapping("init/")
+    @GetMapping("/init")
     @ApiOperation(httpMethod="GET",value="初始化股票信息", notes="无参方法")
     public Result init() {
         long sta=System.currentTimeMillis();
@@ -91,7 +91,7 @@ public class ShareInfoController {
                 ShareInfo shareInfo=new ShareInfo();
                 shareInfo.setShareId(map.get("share_id"));
                 shareInfo.setShareName(map.get("share_name"));
-                shareInfo.setShareType(map.get("share_type"));
+                shareInfo.setHouse(map.get("share_house"));
                 shareInfo.setShareUrl(map.get("share_url"));
                 shareInfoService.save(shareInfo);
             }

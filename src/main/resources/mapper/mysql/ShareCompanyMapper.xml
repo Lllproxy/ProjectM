@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.ShareCompanyMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.ShareCompany">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="share_id" jdbcType="VARCHAR" property="shareId" />
+    <result column="reg_capital" jdbcType="REAL" property="regCapital" />
+    <result column="reg_adress" jdbcType="VARCHAR" property="regAdress" />
+    <result column="mar_date" jdbcType="VARCHAR" property="marDate" />
+    <result column="bul_date" jdbcType="VARCHAR" property="bulDate" />
+    <result column="tot_shares" jdbcType="REAL" property="totShares" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="maket" jdbcType="VARCHAR" property="maket" />
+    <result column="industry" jdbcType="VARCHAR" property="industry" />
+    <result column="com_name_zh" jdbcType="VARCHAR" property="comNameZh" />
+    <result column="com_name_en" jdbcType="VARCHAR" property="comNameEn" />
+    <result column="com_s_name_zh" jdbcType="VARCHAR" property="comSNameZh" />
+    <result column="corporate_rep" jdbcType="VARCHAR" property="corporateRep" />
+    <result column="com_phone" jdbcType="VARCHAR" property="comPhone" />
+    <result column="com_tax" jdbcType="VARCHAR" property="comTax" />
+    <result column="com_website" jdbcType="VARCHAR" property="comWebsite" />
+    <result column="rang" jdbcType="LONGVARCHAR" property="rang" />
+    <result column="com_desc" jdbcType="LONGVARCHAR" property="comDesc" />
+  </resultMap>
+</mapper>

@@ -22,6 +22,7 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,14 +115,24 @@ public class ShareCompanyController {
 //                Thread.sleep(1000);
                 //循环每个share获取详细公司信息
                 System.out.println("获取>>>   "+sha.getShareId()+"   的公司信息。  获取地址："+getSharecompanyUrl+sha.getShareId());
-                Map<String,String> map=new CatchUrl().getShareCompany(getSharecompanyUrl+sha.getShareId(),"ul");
+                Map<String,String> map=new HashMap<>();
+                try {
+                    map=new CatchUrl().getShareCompany(getSharecompanyUrl+sha.getShareId(),"ul");
+
+                }catch (Exception e){
+                    logger.error("失败异常： "+e.getMessage());
+                    erroUrl=getSharecompanyUrl+sha.getShareId();
+                }
                 if ("".equals(map.get("comNameZh"))){
                     System.out.println(sha.getShareId()+">>>>>>>>获取数据空，可能股基下线。");
-                    logger.info("失败的： "+sha.getShareId());
+                    logger.error("股基可能下线： "+sha.getShareId());
                     continue;
                 }
-                erroUrl=getSharecompanyUrl+sha.getShareId();
                 System.out.println(map);
+                if (map.size()==0){
+                    logger.error("获取数据为空： "+getSharecompanyUrl+sha.getShareId());
+                    continue;
+                }
                 ShareCompany shareCompany=new ShareCompany();
                 shareCompany.setArea(map.get("area"));
                 shareCompany.setBulDate(map.get("bulDate"));
@@ -149,7 +160,6 @@ public class ShareCompanyController {
                 count++;
             }
         }catch (Exception e){
-            e.printStackTrace();
             logger.error("异常"+   e.getMessage());
             ShareErro shareErro=new ShareErro();
             shareErro.setUrl(erroUrl);

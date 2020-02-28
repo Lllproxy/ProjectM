@@ -165,14 +165,14 @@ public class CatchUrl {
         return rsmL;
     }
 
-    public static void main(String[] args) {
-//        String url="http://quote.eastmoney.com/stock_list.html";
-//        String tag="ul";
-        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=000752";
-//        String className="";
-//        String type="provincetr";
-        System.out.println(new CatchUrl().getShareCompany(url, "ul"));
-    }
+//    public static void main(String[] args) {
+////        String url="http://quote.eastmoney.com/stock_list.html";
+////        String tag="ul";
+////        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=000752";
+////        String className="";
+////        String type="provincetr";
+////        System.out.println(new CatchUrl().getShareCompany(url, "ul"));
+//    }
 
     public Map<String, String> getShareCompany(String url, String className) {
         List<Map<String,String>> rsmL=new ArrayList<>();

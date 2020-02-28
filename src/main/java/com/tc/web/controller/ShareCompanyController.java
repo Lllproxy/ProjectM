@@ -4,11 +4,15 @@ import com.tc.common.CatchUrl;
 import com.tc.core.Result;
 import com.tc.core.ResultGenerator;
 import com.tc.model.mysql.ShareCompany;
+import com.tc.model.mysql.ShareErro;
 import com.tc.model.mysql.ShareInfo;
 import com.tc.service.mysql.ShareCompanyService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tc.service.mysql.ShareErroService;
 import com.tc.service.mysql.ShareInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
@@ -36,9 +40,14 @@ public class ShareCompanyController {
     @Resource
     private ShareInfoService shareInfoService;
 
+    @Resource
+    private ShareErroService shareErroService;
+
     @Value("${yhzq.sharecompany.url}")
     private String getSharecompanyUrl;
-    
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping("/{id}")
     @ApiOperation(httpMethod="GET",value="查询股票/基金公司详细", notes="id 股票、基金代码 必传")
 	@ApiImplicitParams({
@@ -91,6 +100,7 @@ public class ShareCompanyController {
     @GetMapping("/init")
     @ApiOperation(httpMethod="GET",value="初始化股票信息", notes="无参方法")
     public Result init() {
+        String erroUrl="";
         long sta=System.currentTimeMillis();
         int count=0;
         try {
@@ -101,9 +111,17 @@ public class ShareCompanyController {
             for (ShareInfo sha: sL
                  ) {
                 //每次循环前休眠三秒
-                Thread.sleep(3000);
+//                Thread.sleep(1000);
                 //循环每个share获取详细公司信息
+                System.out.println("获取>>>   "+sha.getShareId()+"   的公司信息。  获取地址："+getSharecompanyUrl+sha.getShareId());
                 Map<String,String> map=new CatchUrl().getShareCompany(getSharecompanyUrl+sha.getShareId(),"ul");
+                if ("".equals(map.get("comNameZh"))){
+                    System.out.println(sha.getShareId()+">>>>>>>>获取数据空，可能股基下线。");
+                    logger.info("失败的： "+sha.getShareId());
+                    continue;
+                }
+                erroUrl=getSharecompanyUrl+sha.getShareId();
+                System.out.println(map);
                 ShareCompany shareCompany=new ShareCompany();
                 shareCompany.setArea(map.get("area"));
                 shareCompany.setBulDate(map.get("bulDate"));
@@ -117,10 +135,14 @@ public class ShareCompanyController {
                 shareCompany.setCorporateRep(map.get("corporateRep"));
                 shareCompany.setRang(map.get("rang"));
                 shareCompany.setRegAdress(map.get("regAdress"));
-                shareCompany.setRegCapital(Float.valueOf(map.get("regCapital").replace(",","")));
+                if (null!=map.get("regCapital")&&!"".equals(map.get("regCapital"))){
+                    shareCompany.setRegCapital(Float.valueOf(map.get("regCapital").replace(",","")));
+                }
                 shareCompany.setMarDate(map.get("marDate"));
                 shareCompany.setMaket(map.get("maket"));
+                if (null!=map.get("totShares")&&!"".equals(map.get("totShares"))){
                 shareCompany.setTotShares(Float.valueOf(map.get("totShares").replace(",","")));
+                }
                 shareCompany.setShareId(map.get("shareId"));
                 shareCompany.setIndustry(map.get("industry"));
                 shareCompanyService.save(shareCompany);
@@ -128,6 +150,10 @@ public class ShareCompanyController {
             }
         }catch (Exception e){
             e.printStackTrace();
+            logger.error("异常"+   e.getMessage());
+            ShareErro shareErro=new ShareErro();
+            shareErro.setUrl(erroUrl);
+            shareErroService.save(shareErro);
             ResultGenerator.genFailResult(e.getMessage());
         }
         long end=System.currentTimeMillis();

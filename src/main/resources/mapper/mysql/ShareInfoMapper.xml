@@ -10,6 +10,5 @@
     <result column="share_type" jdbcType="VARCHAR" property="shareType" />
     <result column="house" jdbcType="VARCHAR" property="house" />
     <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
-    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
   </resultMap>
 </mapper>

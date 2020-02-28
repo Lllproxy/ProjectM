@@ -168,10 +168,10 @@ public class CatchUrl {
     public static void main(String[] args) {
 //        String url="http://quote.eastmoney.com/stock_list.html";
 //        String tag="ul";
-        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=600168";
-        String className="";
+        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=000752";
+//        String className="";
 //        String type="provincetr";
-        System.out.println(new CatchUrl().getShareCompany(url, "tdBg"));
+        System.out.println(new CatchUrl().getShareCompany(url, "ul"));
     }
 
     public Map<String, String> getShareCompany(String url, String className) {
@@ -191,17 +191,17 @@ public class CatchUrl {
                     List<String> rsL = new ArrayList<>();
                     for (String st : sL
                     ) {
-                        System.out.println(st);
+//                        System.out.println(st);
                         if (st.equals("<td>") || "</td>".equals(st) || "<td>\n</td>".equals(st) || "</td>\n<td>".equals(st)) {
-                            System.out.println("移除无效标签");
+//                            System.out.println("移除无效标签");
                         } else {
-                            System.out.println("添加到待处理数组");
+//                            System.out.println("添加到待处理数组");
                             st = st.replace("<td class=\"tdBg\"><code>", "").replace("</code></td>", "");
                             st = st.replace("<td>", "").replace("</td>", "");
                             st = st.replace("<td colspan=\"3\">", "");
                             rsL.add(st);
                         }
-                        System.out.println("=============================================");
+//                        System.out.println("=============================================");
                     }
                     //检验结果
                     String[] skL = new String[rsL.size()];
@@ -209,8 +209,8 @@ public class CatchUrl {
                     for (String sg : rsL
                     ) {
                         skL[countt] = sg;
-                        System.out.println(sg);
-                        System.out.println(countt + "**************************");
+//                        System.out.println(sg);
+//                        System.out.println(countt + "**************************");
                         countt++;
                     }
                     //做K-V映射
@@ -220,7 +220,7 @@ public class CatchUrl {
                             map.put(key, skL[i + 1]);
                         }
                     }
-                    System.out.println(map);
+//                    System.out.println(map);
                 }
             }
         }

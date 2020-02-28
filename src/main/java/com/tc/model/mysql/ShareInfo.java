@@ -35,11 +35,6 @@ public class ShareInfo {
     @Column(name = "share_url")
     private String shareUrl;
 
-    /**
-     * 插入时间
-     */
-    @Column(name = "insert_time")
-    private Date insertTime;
 
     /**
      * 获取股票/基金代码
@@ -131,21 +126,4 @@ public class ShareInfo {
         this.shareUrl = shareUrl;
     }
 
-    /**
-     * 获取插入时间
-     *
-     * @return insert_time - 插入时间
-     */
-    public Date getInsertTime() {
-        return insertTime;
-    }
-
-    /**
-     * 设置插入时间
-     *
-     * @param insertTime 插入时间
-     */
-    public void setInsertTime(Date insertTime) {
-        this.insertTime = insertTime;
-    }
 }

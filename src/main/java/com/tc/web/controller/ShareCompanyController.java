@@ -8,6 +8,7 @@ import com.tc.model.mysql.ShareInfo;
 import com.tc.service.mysql.ShareCompanyService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tc.service.mysql.ShareInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
@@ -31,6 +32,9 @@ import java.util.Map;
 public class ShareCompanyController {
     @Resource
     private ShareCompanyService shareCompanyService;
+
+    @Resource
+    private ShareInfoService shareInfoService;
 
     @Value("${yhzq.sharecompany.url}")
     private String getSharecompanyUrl;
@@ -91,11 +95,15 @@ public class ShareCompanyController {
         int count=0;
         try {
             //调用东方财富网接口网爬取取股票基金基本数据
-            List<Map<String,String>> list=new CatchUrl().getShareCompany(getSharecompanyUrl,"ul");
-            List<ShareInfo> sL=new ArrayList<>();
-            for (Map<String,String > map:list
-            ) {
-                count++;
+            List<Map<String,String>> list=new ArrayList<>();
+            //获取所有的shareId;
+            List<ShareInfo> sL=shareInfoService.findAll();
+            for (ShareInfo sha: sL
+                 ) {
+                //每次循环前休眠三秒
+                Thread.sleep(3000);
+                //循环每个share获取详细公司信息
+                Map<String,String> map=new CatchUrl().getShareCompany(getSharecompanyUrl+sha.getShareId(),"ul");
                 ShareCompany shareCompany=new ShareCompany();
                 shareCompany.setArea(map.get("area"));
                 shareCompany.setBulDate(map.get("bulDate"));
@@ -109,17 +117,18 @@ public class ShareCompanyController {
                 shareCompany.setCorporateRep(map.get("corporateRep"));
                 shareCompany.setRang(map.get("rang"));
                 shareCompany.setRegAdress(map.get("regAdress"));
-                shareCompany.setRegCapital(Float.valueOf(map.get("regCapital")));
+                shareCompany.setRegCapital(Float.valueOf(map.get("regCapital").replace(",","")));
                 shareCompany.setMarDate(map.get("marDate"));
                 shareCompany.setMaket(map.get("maket"));
-                shareCompany.setTotShares(Float.valueOf(map.get("totShares")));
+                shareCompany.setTotShares(Float.valueOf(map.get("totShares").replace(",","")));
                 shareCompany.setShareId(map.get("shareId"));
                 shareCompany.setIndustry(map.get("industry"));
                 shareCompanyService.save(shareCompany);
+                count++;
             }
-            //shareInfoService.save(sL);
         }catch (Exception e){
             e.printStackTrace();
+            ResultGenerator.genFailResult(e.getMessage());
         }
         long end=System.currentTimeMillis();
         long total=end-sta;

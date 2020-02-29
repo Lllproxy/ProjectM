@@ -56,7 +56,7 @@ public class CodeGenerator {
     private static final String MAPPER_PACKAGE = MYSQL_MAPPER_PACKAGE;
     
     public static void main(String[] args) {
-    	  genCode(new String[]{"share_info"});
+    	  genCode(new String[]{"share_info","share_company"});
 //    	  genCode(new String[]{"user_info","power","role",
 //                  "verify_log","web_info","server_info",
 //                  "power_web","power_server","powe_type",
@@ -71,8 +71,8 @@ public class CodeGenerator {
         for (String tableName : tableNames) {
             //根据需求生成，不需要的注掉，模板有问题的话可以自己修改。
             genModelAndMapper(tableName);
-//            genService(tableName);
-//            genController(tableName);
+            genService(tableName);
+            genController(tableName);
         }
     }
 

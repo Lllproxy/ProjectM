@@ -1,5 +1,6 @@
 package com.tc.common;
 
+import com.sun.codemodel.internal.JCase;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -138,20 +139,20 @@ public class CatchUrl {
                                 String rzu=li.children().first().ownText();
                                 String shareCode=rzu.substring(rzu.indexOf("(")+1,rzu.indexOf(")"));
                                 String shareName=rzu.substring(0,rzu.indexOf("("));
-                                String shareType="NULL";
+                                String shareHouse="NULL";
                                 if (shareUrl.contains("/sh")){
-                                    shareType="SH";
+                                    shareHouse="SH";
                                 }else if (shareUrl.contains("/sz")){
-                                    shareType="SZ";
+                                    shareHouse="SZ";
                                 }
                                 Map map =new HashMap();
                                 System.out.println("shareCode:   "+shareCode);
                                 System.out.println("shareName: "+shareName);
-                                System.out.println("shareType："+shareType);
+                                System.out.println("share_house："+shareHouse);
                                 System.out.println("shareUrl："+shareUrl);
                                 map.put("share_id",shareCode);
                                 map.put("share_name",shareName);
-                                map.put("share_type",shareType);
+                                map.put("share_house",shareHouse);
                                 map.put("share_url",shareUrl);
                                 rsmL.add(map);
                                 System.out.println("插入第 "+count+" 条数据");
@@ -164,10 +165,141 @@ public class CatchUrl {
         return rsmL;
     }
 
-    public static void main(String[] args) {
-        String url="http://quote.eastmoney.com/stock_list.html";
-        String tag="ul";
-//        String type="provincetr";
-        System.out.println(new CatchUrl().getShareInfo(url, tag));
+//    public static void main(String[] args) {
+////        String url="http://quote.eastmoney.com/stock_list.html";
+////        String tag="ul";
+////        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=000752";
+////        String className="";
+////        String type="provincetr";
+////        System.out.println(new CatchUrl().getShareCompany(url, "ul"));
+//    }
+
+    public Map<String, String> getShareCompany(String url, String className) {
+        List<Map<String,String>> rsmL=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        int count=0;
+        //从网络上获取网页
+        Document document=getHtmlTextByUrl(url);
+        if (document!=null) {
+            //获取表单tbody元素内容;
+            Elements elements = getElementsByTag(document, "tbody");
+            for (Element el : elements
+            ) {
+                if (el.toString().contains("tdBg")) {
+                    Elements element = el.children().tagName("td");
+                    String[] sL = element.toString().replace("> <", ">δ<").split("δ");
+                    List<String> rsL = new ArrayList<>();
+                    for (String st : sL
+                    ) {
+//                        System.out.println(st);
+                        if (st.equals("<td>") || "</td>".equals(st) || "<td>\n</td>".equals(st) || "</td>\n<td>".equals(st)) {
+//                            System.out.println("移除无效标签");
+                        } else {
+//                            System.out.println("添加到待处理数组");
+                            st = st.replace("<td class=\"tdBg\"><code>", "").replace("</code></td>", "");
+                            st = st.replace("<td>", "").replace("</td>", "");
+                            st = st.replace("<td colspan=\"3\">", "");
+                            rsL.add(st);
+                        }
+//                        System.out.println("=============================================");
+                    }
+                    //检验结果
+                    String[] skL = new String[rsL.size()];
+                    int countt = 0;
+                    for (String sg : rsL
+                    ) {
+                        skL[countt] = sg;
+//                        System.out.println(sg);
+//                        System.out.println(countt + "**************************");
+                        countt++;
+                    }
+                    //做K-V映射
+                    for (int i = 0; i < skL.length; i++) {
+                        String key = getKey(skL[i]);
+                        if (!"".equals(key)) {
+                            map.put(key, skL[i + 1]);
+                        }
+                    }
+//                    System.out.println(map);
+                }
+            }
+        }
+        return map;
+    }
+
+    private String getKey(String stg) {
+        String key;
+        switch (stg){
+            case "公司名称":
+               key="comNameZh";
+            break;
+            case "英文名称":
+               key="comNameEn";
+            break;
+            case "公司简称":
+               key="comSNameZh";
+            break;
+            case "股票代码":
+               key="shareId";
+            break;
+            case "注册资本(万元)":
+               key="regCapital";
+            break;
+            case "成立日期":
+               key="bulDate";
+            break;
+            case "上市日期":
+               key="marDate";
+            break;
+            case "总股本(万股)":
+               key="totShares";
+            break;
+            case "流通股(万股)":
+               key="";
+            break;
+            case "所属区域":
+               key="area";
+            break;
+            case "上市市场":
+               key="maket";
+            break;
+            case "所属行业":
+               key="industry";
+            break;
+            case "法人代表":
+               key="corporateRep";
+            break;
+            case "信息披露网址":
+               key="";
+            break;
+            case "公司董秘":
+               key="";
+            break;
+            case "公司电话":
+               key="comPhone";
+            break;
+            case "公司传真":
+               key="comTax";
+            break;
+            case "董秘电子邮箱":
+               key="";
+            break;
+            case "公司网址":
+               key="comWebsite";
+            break;
+            case "注册地址":
+               key="regAdress";
+            break;
+            case "经营范围":
+               key="rang";
+            break;
+            case "公司介绍":
+               key="comDesc";
+            break;
+            default:
+               key="";
+            break;
+        }
+        return key;
     }
 }

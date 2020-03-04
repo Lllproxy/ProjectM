@@ -36,7 +36,7 @@ public class CatchUrl {
 //                    .data("query","Java")
 //                    .userAgent("Mozilla")
 //                    .cookie("auth", "token")
-//                    .timeout(300000).post();
+//                    .timeout(300000).get();
             Connection conn = Jsoup.connect(url).timeout(30000);
             conn.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
             conn.header("Accept-Encoding", "gzip, deflate, sdch");
@@ -75,6 +75,13 @@ public class CatchUrl {
     public Elements getElementsByTag(Document document, String tag){
         Elements elements=null;
         elements=document.getElementsByTag(tag);
+        return elements;
+    }
+
+
+    public Elements getElementsByClassId(Document document, String classId){
+        Element element=document.getElementById(classId);
+        Elements elements=document.getElementsByClass(".dumascroll_area");
         return elements;
     }
 
@@ -165,65 +172,98 @@ public class CatchUrl {
         return rsmL;
     }
 
-//    public static void main(String[] args) {
-////        String url="http://quote.eastmoney.com/stock_list.html";
-////        String tag="ul";
-////        String url="http://www.chinastock.com.cn/yhwz/astock/companyProfileAction.do?methodCall=getData&stockCode=000752";
-////        String className="";
-////        String type="provincetr";
-////        System.out.println(new CatchUrl().getShareCompany(url, "ul"));
-//    }
+    public static void main(String[] args) {
+//        String url="http://quote.eastmoney.com/stock_list.html";
+        String tag="ul";
+        String url="http://www.chinastock.com.cn/yhwz/astock/index600168.shtml";
+//        String className="";
+//        String type="provincetr";
+        System.out.println(new CatchUrl().getShareBaseValue(url));
+    }
 
-    public Map<String, String> getShareCompany(String url, String className) {
+    public Map<String, String> getShareCompany(String url) {
         List<Map<String,String>> rsmL=new ArrayList<>();
         Map<String,String> map=new HashMap<>();
         int count=0;
-        //从网络上获取网页
-        Document document=getHtmlTextByUrl(url);
-        if (document!=null) {
-            //获取表单tbody元素内容;
-            Elements elements = getElementsByTag(document, "tbody");
-            for (Element el : elements
-            ) {
-                if (el.toString().contains("tdBg")) {
-                    Elements element = el.children().tagName("td");
-                    String[] sL = element.toString().replace("> <", ">δ<").split("δ");
-                    List<String> rsL = new ArrayList<>();
-                    for (String st : sL
-                    ) {
+        try{
+            //从网络上获取网页
+            Document document=getHtmlTextByUrl(url);
+            if (document!=null) {
+                //获取表单tbody元素内容;
+                Elements elements = getElementsByTag(document, "tbody");
+                for (Element el : elements
+                ) {
+                    if (el.toString().contains("tdBg")) {
+                        Elements element = el.children().tagName("td");
+                        String[] sL = element.toString().replace("> <", ">δ<").split("δ");
+                        List<String> rsL = new ArrayList<>();
+                        for (String st : sL
+                        ) {
 //                        System.out.println(st);
-                        if (st.equals("<td>") || "</td>".equals(st) || "<td>\n</td>".equals(st) || "</td>\n<td>".equals(st)) {
+                            if (st.equals("<td>") || "</td>".equals(st) || "<td>\n</td>".equals(st) || "</td>\n<td>".equals(st)) {
 //                            System.out.println("移除无效标签");
-                        } else {
+                            } else {
 //                            System.out.println("添加到待处理数组");
-                            st = st.replace("<td class=\"tdBg\"><code>", "").replace("</code></td>", "");
-                            st = st.replace("<td>", "").replace("</td>", "");
-                            st = st.replace("<td colspan=\"3\">", "");
-                            rsL.add(st);
-                        }
+                                st = st.replace("<td class=\"tdBg\"><code>", "").replace("</code></td>", "");
+                                st = st.replace("<td>", "").replace("</td>", "");
+                                st = st.replace("<td colspan=\"3\">", "");
+                                rsL.add(st);
+                            }
 //                        System.out.println("=============================================");
-                    }
-                    //检验结果
-                    String[] skL = new String[rsL.size()];
-                    int countt = 0;
-                    for (String sg : rsL
-                    ) {
-                        skL[countt] = sg;
+                        }
+                        //检验结果
+                        String[] skL = new String[rsL.size()];
+                        int countt = 0;
+                        for (String sg : rsL
+                        ) {
+                            skL[countt] = sg;
 //                        System.out.println(sg);
 //                        System.out.println(countt + "**************************");
-                        countt++;
-                    }
-                    //做K-V映射
-                    for (int i = 0; i < skL.length; i++) {
-                        String key = getKey(skL[i]);
-                        if (!"".equals(key)) {
-                            map.put(key, skL[i + 1]);
+                            countt++;
                         }
-                    }
+                        //做K-V映射
+                        for (int i = 0; i < skL.length; i++) {
+                            String key = getKey(skL[i]);
+                            if (!"".equals(key)) {
+                                map.put(key, skL[i + 1]);
+                            }
+                        }
 //                    System.out.println(map);
+                    }
                 }
             }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
+        return map;
+    }
+
+
+    public Map<String, String> getShareBaseValue(String url) {
+        List<Map<String,String>> rsmL=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        int count=0;
+        try{
+            //从网络上获取网页
+            Document document=getHtmlTextByUrl(url);
+            if (document!=null) {
+                //获取表单tbody元素内容;
+                Elements elements = getElementsByTag(document, "tbody");
+                for (Element el : elements
+                ) {
+                    System.out.println(el.parent().parent());
+                    System.out.println(el.toString());
+                    //TODO根据不同的className，或者特殊标识抓去不同类数据
+
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return map;
     }
 

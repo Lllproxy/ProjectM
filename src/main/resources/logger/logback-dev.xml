@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
 	<contextName>logback</contextName>
-	<property name="logback.logdir" value="/Users/robosen/Documents/MyIdeaProject/logs/" />
-	<property name="logback.appname" value="traffic-infrastructure-service" />
+	<property name="logback.logdir" value="D://LBC//logs" />
+	<property name="logback.appname" value="ProjectM" />
 	
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<!--展示格式 layout -->

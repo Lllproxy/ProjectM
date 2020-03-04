@@ -14,13 +14,13 @@ import com.tc.service.mysql.ShareInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +99,9 @@ public class ShareCompanyController {
     }
 
     @GetMapping("/init")
-    @ApiOperation(httpMethod="GET",value="初始化股票信息", notes="无参方法")
+    @ApiOperation(httpMethod="GET",value="初始化股票公司信息", notes="无参方法")
+    //周一到周五每天上午10:15分执行
+    @Scheduled(cron = "0 15 10 ? * MON-FRI ")
     public Result init() {
         String erroUrl="";
         long sta=System.currentTimeMillis();
@@ -109,28 +111,42 @@ public class ShareCompanyController {
             List<Map<String,String>> list=new ArrayList<>();
             //获取所有的shareId;
             List<ShareInfo> sL=shareInfoService.findAll();
-            for (ShareInfo sha: sL
+            List<String> sIdL=new ArrayList<>();
+            List<ShareCompany> scL=shareCompanyService.findAll();
+            List<String> scIdL=new ArrayList<>();
+            for (ShareInfo shareInfo:sL
+                 ) {
+                sIdL.add(shareInfo.getShareId());
+            }
+            for (ShareCompany sha:scL
+                 ) {
+                scIdL.add(sha.getShareId());
+            }
+
+            sIdL.removeAll(scIdL);
+            System.out.println("剩余获取数量：>>>>>>>   "+sIdL.size());
+            for (String  shaId: sIdL
                  ) {
                 //每次循环前休眠三秒
 //                Thread.sleep(1000);
                 //循环每个share获取详细公司信息
-                System.out.println("获取>>>   "+sha.getShareId()+"   的公司信息。  获取地址："+getSharecompanyUrl+sha.getShareId());
+                System.out.println("获取>>>   "+shaId+"   的公司信息。  获取地址："+getSharecompanyUrl+shaId);
                 Map<String,String> map=new HashMap<>();
                 try {
-                    map=new CatchUrl().getShareCompany(getSharecompanyUrl+sha.getShareId(),"ul");
+                    map=new CatchUrl().getShareCompany(getSharecompanyUrl+shaId);
 
                 }catch (Exception e){
                     logger.error("失败异常： "+e.getMessage());
-                    erroUrl=getSharecompanyUrl+sha.getShareId();
+                    erroUrl=getSharecompanyUrl+shaId;
                 }
                 if ("".equals(map.get("comNameZh"))){
-                    System.out.println(sha.getShareId()+">>>>>>>>获取数据空，可能股基下线。");
-                    logger.error("股基可能下线： "+sha.getShareId());
+                    System.out.println(shaId+">>>>>>>>获取数据空，可能股基下线。");
+                    logger.error("股基可能下线： "+shaId);
                     continue;
                 }
                 System.out.println(map);
                 if (map.size()==0){
-                    logger.error("获取数据为空： "+getSharecompanyUrl+sha.getShareId());
+                    logger.error("获取数据为空： "+getSharecompanyUrl+shaId);
                     continue;
                 }
                 ShareCompany shareCompany=new ShareCompany();

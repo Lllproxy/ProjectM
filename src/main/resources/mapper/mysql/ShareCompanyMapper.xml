@@ -7,7 +7,6 @@
     -->
     <id column="share_id" jdbcType="VARCHAR" property="shareId" />
     <result column="reg_capital" jdbcType="REAL" property="regCapital" />
-    <result column="reg_adress" jdbcType="VARCHAR" property="regAdress" />
     <result column="mar_date" jdbcType="VARCHAR" property="marDate" />
     <result column="bul_date" jdbcType="VARCHAR" property="bulDate" />
     <result column="tot_shares" jdbcType="REAL" property="totShares" />
@@ -21,6 +20,8 @@
     <result column="com_phone" jdbcType="VARCHAR" property="comPhone" />
     <result column="com_tax" jdbcType="VARCHAR" property="comTax" />
     <result column="com_website" jdbcType="VARCHAR" property="comWebsite" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="reg_adress" jdbcType="LONGVARCHAR" property="regAdress" />
     <result column="rang" jdbcType="LONGVARCHAR" property="rang" />
     <result column="com_desc" jdbcType="LONGVARCHAR" property="comDesc" />
   </resultMap>

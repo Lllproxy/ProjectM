@@ -253,10 +253,24 @@ public class CatchUrl {
                 Elements elements = getElementsByTag(document, "tbody");
                 for (Element el : elements
                 ) {
-                    System.out.println(el.parent().parent());
-                    System.out.println(el.toString());
                     //TODO根据不同的className，或者特殊标识抓去不同类数据
-
+                        //System.out.println(el.toString());
+                        //如果是基本信息的div标签
+                    if (el.toString().contains("发 行 价")){
+                        //定位到基本价值块
+                        Elements els=el.children();
+                        for (Element em:els
+                             ) {
+                            System.out.println(em.toString());
+                            System.out.println("*******************");
+                            String key=em.child(0).toString();
+                            key=key.substring(key.indexOf("<b>")+3,key.indexOf("</b>"));
+                            String keyR=getKey(key);
+                            if (!"".equals(keyR)) {
+                                map.put(keyR, em.child(1).ownText());
+                            }
+                        }
+                        }
                 }
             }
 
@@ -336,6 +350,15 @@ public class CatchUrl {
             case "公司介绍":
                key="comDesc";
             break;
+            case "发 行 价：":
+                key="push_price";
+                break;
+            case "每股收益：":
+                key="profit_each";
+                break;
+            case "每股净资产：":
+                key="real_price_each";
+                break;
             default:
                key="";
             break;

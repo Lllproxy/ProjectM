@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.jsoup:jsoup:1.12.1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../maven/responsity/org/jsoup/jsoup/1.12.1/jsoup-1.12.1.jar!/" />
+      <root url="jar://F:/apache-maven-3.6.2-bin/repository/org/jsoup/jsoup/1.12.1/jsoup-1.12.1.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../maven/responsity/org/jsoup/jsoup/1.12.1/jsoup-1.12.1-javadoc.jar!/" />
+      <root url="jar://F:/apache-maven-3.6.2-bin/repository/org/jsoup/jsoup/1.12.1/jsoup-1.12.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../maven/responsity/org/jsoup/jsoup/1.12.1/jsoup-1.12.1-sources.jar!/" />
+      <root url="jar://F:/apache-maven-3.6.2-bin/repository/org/jsoup/jsoup/1.12.1/jsoup-1.12.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

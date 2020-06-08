@@ -1,3 +1,6 @@
+import com.tc.Application;
+import com.tc.core.Result;
+import com.tc.core.ResultGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Random;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

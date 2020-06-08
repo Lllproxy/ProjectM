@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.ShareValueBaseMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.ShareValueBase">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="share_id" jdbcType="VARCHAR" property="shareId" />
+    <result column="push_value" jdbcType="REAL" property="pushValue" />
+    <result column="real_price_each" jdbcType="REAL" property="realPriceEach" />
+    <result column="porfit_each" jdbcType="REAL" property="porfitEach" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

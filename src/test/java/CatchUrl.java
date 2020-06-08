@@ -5,10 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * demo class
@@ -135,9 +132,61 @@ public class CatchUrl {
     }
 
     public static void main(String[] args) {
-        String url="http://quote.eastmoney.com/stock_list.html";
-        String tag="ul";
-//        String type="provincetr";
-        System.out.println(new CatchUrl().getShareInfo(url, tag));
+//        String url="http://quote.eastmoney.com/stock_list.html";
+//        String tag="ul";
+////        String type="provincetr";
+//        System.out.println(new CatchUrl().getShareInfo(url, tag));
+        long today=System.currentTimeMillis();
+        for (int i = 0; i <today ; i++) {
+            bingo(i);
+        }
+    }
+
+    public static void bingo(int rowno) {
+        //随机因子
+        Random r=new Random();
+        //前区6位
+        Set<String> head_six=new HashSet<>();
+        //后区2位
+        Set<String> end_two=new HashSet<>();
+        int[] arr=new int[35];
+        for (int i = 0; i < 35; i++) {
+            arr[i]=r.nextInt(36);
+            if (head_six.size()<5&&arr[i]>0){
+                if (arr[i]>=10){
+                    head_six.add(String.valueOf(arr[i]));
+                }else{
+                    head_six.add("0"+arr[i]);
+                }
+
+            }
+        }
+        //计算后区域
+        int[] end_arr=new int[12];
+        for (int i = 0; i < 12; i++) {
+            end_arr[i]=r.nextInt(13);
+            if (end_two.size()<2&&end_arr[i]>0){
+                if (end_arr[i]>=10){
+                    end_two.add(String.valueOf(end_arr[i]));
+                }else{
+                    end_two.add("0"+end_arr[i]);
+                }
+            }
+        }
+        StringBuilder sb=new StringBuilder();
+
+        TreeSet<String> head_sortedSet = new TreeSet<>(((o1, o2) -> o1.compareTo(o2)));
+        head_sortedSet.addAll(head_six);
+        for (String num:head_sortedSet
+        ) {
+            sb.append(num+" ");
+        }
+        TreeSet<String> end_sortedSet = new TreeSet<>(((o1, o2) -> o1.compareTo(o2)));
+        end_sortedSet.addAll(end_two);
+        for (String num:end_sortedSet
+        ) {
+            sb.append(num+" ");
+        }
+
     }
 }

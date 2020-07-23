@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tc.dao.mysql.BigLuckMapper">
+  <resultMap id="BaseResultMap" type="com.tc.model.mysql.BigLuck">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="red_1" jdbcType="VARCHAR" property="red1" />
+    <result column="red_2" jdbcType="VARCHAR" property="red2" />
+    <result column="red_3" jdbcType="VARCHAR" property="red3" />
+    <result column="red_4" jdbcType="VARCHAR" property="red4" />
+    <result column="red_5" jdbcType="VARCHAR" property="red5" />
+    <result column="blue_1" jdbcType="VARCHAR" property="blue1" />
+    <result column="blue_2" jdbcType="VARCHAR" property="blue2" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+  </resultMap>
+</mapper>

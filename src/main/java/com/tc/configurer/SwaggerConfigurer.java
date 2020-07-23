@@ -1,5 +1,6 @@
 package com.tc.configurer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,12 +19,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfigurer  {
-	
+	@Value("${swagger2.host}")
+	private String swaggerHost;
+
+	@Value("${server.port}")
+	private String port;
+
 	@Bean
 	public Docket createRestApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+				.host(swaggerHost+":"+port)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.tc.web.controller"))
+
 				.paths(PathSelectors.any()).build();
 	}
 
@@ -31,6 +39,8 @@ public class SwaggerConfigurer  {
 		return new ApiInfoBuilder()
 				.title("ProjectM 价值数据中心云平台")
 				.description("ProjectM 价值数据中心云平台-Restful Api")
-				.termsOfServiceUrl("").version("1.0").build();
+				//.termsOfServiceUrl("http://49.235.60.22/9999")
+				.version("1.0")
+				.build();
 	}
 }

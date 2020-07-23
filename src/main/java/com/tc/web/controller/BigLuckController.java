@@ -1,19 +1,13 @@
 package com.tc.web.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.tc.common.CatchUrl;
 import com.tc.core.Result;
 import com.tc.core.ResultGenerator;
+import com.tc.model.mysql.ShareCompany;
 import com.tc.model.mysql.ShareErro;
-import com.tc.model.mysql.ShareInfo;
-import com.tc.model.mysql.ShareValueBase;
-import com.tc.service.mysql.ShareErroService;
-import com.tc.service.mysql.ShareInfoService;
-import com.tc.service.mysql.ShareValueBaseService;
+import com.tc.model.mysql.BigLuck;
+import com.tc.service.mysql.BigLuckService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +27,11 @@ import java.util.*;
 @RequestMapping("/big/luck")
 @Api(tags = "大乐透控制器")
 public class BigLuckController {
+    @Resource
+    private BigLuckService bigLuckService;
 
+    @Value("${api.luck.url}")
+    private String luckUrl;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/bingo/{times}")
@@ -101,4 +99,53 @@ public class BigLuckController {
     return sb.toString();
     }
 
+    @GetMapping("/init")
+    @ApiOperation(httpMethod="GET",value="初始化股票公司信息", notes="无参方法")
+    //周一到周五每天上午10:15分执行
+    @Scheduled(cron = "0 15 10 ? * MON-FRI ")
+    public Result init() {
+        String erroUrl="";
+        long sta=System.currentTimeMillis();
+        int count=0;
+        try {
+            for (int i= 70001; i < 200067; i++) {
+                String number="";
+                if (i<100000){
+                    number="0"+i;
+                }
+                //每次循环前休眠三秒,防止ip被封
+                Thread.sleep(1000);
+                String url=luckUrl.replace("@",number);
+                System.out.println("获取>>>   "+number+"   期数的大乐透顺序号。  获取地址："+url);
+                Map<String,String> map=new HashMap<>();
+                try {
+                    map=new CatchUrl().getBigLuck(url);
+                }catch (Exception e){
+                    logger.error("失败异常： "+e.getMessage());
+                    erroUrl=url;
+                }
+                System.out.println(map);
+                if (map.size()==0){
+                    continue;
+                }
+                BigLuck bigLuck=new BigLuck();
+                bigLuck.setNumber(number);
+                bigLuck.setRed1(map.get("r1"));
+                bigLuck.setRed2(map.get("r2"));
+                bigLuck.setRed3(map.get("r3"));
+                bigLuck.setRed4(map.get("r4"));
+                bigLuck.setRed5(map.get("r5"));
+                bigLuck.setBlue1(map.get("b1"));
+                bigLuck.setBlue2(map.get("b2"));
+                bigLuckService.save(bigLuck);
+                count++;
+            }
+        }catch (Exception e){
+            logger.error("异常"+   e.getMessage());
+            ResultGenerator.genFailResult(e.getMessage());
+        }
+        long end=System.currentTimeMillis();
+        long total=end-sta;
+        return ResultGenerator.genSuccessResult("初始化成功"+count+"条数据；总耗时"+total+"毫秒");
+    }
 }

@@ -365,4 +365,63 @@ public class CatchUrl {
         }
         return key;
     }
+
+    public Map<String, String> getBigLuck(String url) {
+            List<Map<String,String>> rsmL=new ArrayList<>();
+            Map<String,String> map=new HashMap<>();
+            int count=0;
+            try{
+                //从网络上获取网页
+                Document document=getHtmlTextByUrl(url);
+                if (document!=null) {
+                    //获取表单tbody元素内容;
+                    Elements elements = getElementsByTag(document, "tbody");
+                    for (Element el : elements
+                    ) {
+                        if (el.toString().contains("tdBg")) {
+                            Elements element = el.children().tagName("td");
+                            String[] sL = element.toString().replace("> <", ">δ<").split("δ");
+                            List<String> rsL = new ArrayList<>();
+                            for (String st : sL
+                            ) {
+//                        System.out.println(st);
+                                if (st.equals("<td>") || "</td>".equals(st) || "<td>\n</td>".equals(st) || "</td>\n<td>".equals(st)) {
+//                            System.out.println("移除无效标签");
+                                } else {
+//                            System.out.println("添加到待处理数组");
+                                    st = st.replace("<td class=\"tdBg\"><code>", "").replace("</code></td>", "");
+                                    st = st.replace("<td>", "").replace("</td>", "");
+                                    st = st.replace("<td colspan=\"3\">", "");
+                                    rsL.add(st);
+                                }
+//                        System.out.println("=============================================");
+                            }
+                            //检验结果
+                            String[] skL = new String[rsL.size()];
+                            int countt = 0;
+                            for (String sg : rsL
+                            ) {
+                                skL[countt] = sg;
+//                        System.out.println(sg);
+//                        System.out.println(countt + "**************************");
+                                countt++;
+                            }
+                            //做K-V映射
+                            for (int i = 0; i < skL.length; i++) {
+                                String key = getKey(skL[i]);
+                                if (!"".equals(key)) {
+                                    map.put(key, skL[i + 1]);
+                                }
+                            }
+//                    System.out.println(map);
+                        }
+                    }
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return map;
+    }
 }

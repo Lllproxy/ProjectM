@@ -367,61 +367,42 @@ public class CatchUrl {
     }
 
     public Map<String, String> getBigLuck(String url) {
-            List<Map<String,String>> rsmL=new ArrayList<>();
-            Map<String,String> map=new HashMap<>();
-            int count=0;
-            try{
-                //从网络上获取网页
-                Document document=getHtmlTextByUrl(url);
-                if (document!=null) {
-                    //获取表单tbody元素内容;
-                    Elements elements = getElementsByTag(document, "tbody");
-                    for (Element el : elements
-                    ) {
-                        if (el.toString().contains("tdBg")) {
-                            Elements element = el.children().tagName("td");
-                            String[] sL = element.toString().replace("> <", ">δ<").split("δ");
-                            List<String> rsL = new ArrayList<>();
-                            for (String st : sL
+        Map<String ,String> map=new HashMap<>();
+        //从网络上获取网页
+        Document document=getHtmlTextByUrl(url);
+        if (document!=null) {
+            Elements elements=getElementsByTag(document,"tbody");// ul的集合
+            for(Element tbody:elements){// 依次循环每个元素，也就是一个tbody
+                if(tbody!=null){
+                    //System.out.println("table  "+tbody);
+                    for(Element li:tbody.children()){// 一个ul的子元素li，li内包含a标签
+                        //System.out.println("li "+li);
+                        if(li.children()!=null&&li.toString().contains("出球顺序")){
+                            //System.out.println("td "+li.children());
+                            for (Element lis:li.children()
                             ) {
-//                        System.out.println(st);
-                                if (st.equals("<td>") || "</td>".equals(st) || "<td>\n</td>".equals(st) || "</td>\n<td>".equals(st)) {
-//                            System.out.println("移除无效标签");
-                                } else {
-//                            System.out.println("添加到待处理数组");
-                                    st = st.replace("<td class=\"tdBg\"><code>", "").replace("</code></td>", "");
-                                    st = st.replace("<td>", "").replace("</td>", "");
-                                    st = st.replace("<td colspan=\"3\">", "");
-                                    rsL.add(st);
-                                }
-//                        System.out.println("=============================================");
-                            }
-                            //检验结果
-                            String[] skL = new String[rsL.size()];
-                            int countt = 0;
-                            for (String sg : rsL
-                            ) {
-                                skL[countt] = sg;
-//                        System.out.println(sg);
-//                        System.out.println(countt + "**************************");
-                                countt++;
-                            }
-                            //做K-V映射
-                            for (int i = 0; i < skL.length; i++) {
-                                String key = getKey(skL[i]);
-                                if (!"".equals(key)) {
-                                    map.put(key, skL[i + 1]);
+                                // System.out.println("lis>>>  "+lis);
+                                if (lis.toString().contains("|")&&!lis.toString().contains("table")){
+                                    System.out.println("lis>>>  "+lis.toString().replace("<td>","").replace("</td>",""));
+                                    String[] mubers=lis.toString().replace("<td>","").replace("</td>","").split("\\|");
+                                    String[] red5=mubers[0].split(" ");
+                                    String[] blue2=mubers[1].split(" ");
+                                    map.put("r1",red5[0]);
+                                    map.put("r2",red5[1]);
+                                    map.put("r3",red5[2]);
+                                    map.put("r4",red5[3]);
+                                    map.put("r5",red5[4]);
+                                    map.put("b1",blue2[0]);
+                                    map.put("b2",blue2[1]);
                                 }
                             }
-//                    System.out.println(map);
+
                         }
                     }
                 }
 
-            }catch (Exception e){
-                e.printStackTrace();
             }
-
-            return map;
+        }
+        return  map;
     }
 }

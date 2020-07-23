@@ -132,14 +132,54 @@ public class CatchUrl {
     }
 
     public static void main(String[] args) {
-//        String url="http://quote.eastmoney.com/stock_list.html";
-//        String tag="ul";
-////        String type="provincetr";
-//        System.out.println(new CatchUrl().getShareInfo(url, tag));
-        long today=System.currentTimeMillis();
-        for (int i = 0; i <today ; i++) {
-            bingo(i);
+        String url="http://kaijiang.500.com/shtml/dlt/20066.shtml";
+        String tag="ul";
+//        String type="provincetr";
+        System.out.println(new CatchUrl().getBigLuck(url, tag));
+//        long today=System.currentTimeMillis();
+//        for (int i = 0; i <today ; i++) {
+//            bingo(i);
+//        }
+    }
+
+    private Map<String, String> getBigLuck(String url, String tag) {
+        Map<String ,String> map=new HashMap<>();
+        //从网络上获取网页
+        Document document=getHtmlTextByUrl(url);
+        if (document!=null) {
+            Elements elements=getElementsByTag(document,"tbody");// ul的集合
+            for(Element tbody:elements){// 依次循环每个元素，也就是一个tbody
+                if(tbody!=null){
+                    //System.out.println("table  "+tbody);
+                    for(Element li:tbody.children()){// 一个ul的子元素li，li内包含a标签
+                        //System.out.println("li "+li);
+                        if(li.children()!=null&&li.toString().contains("出球顺序")){
+                            //System.out.println("td "+li.children());
+                            for (Element lis:li.children()
+                                 ) {
+                               // System.out.println("lis>>>  "+lis);
+                                if (lis.toString().contains("|")&&!lis.toString().contains("table")){
+                                    System.out.println("lis>>>  "+lis.toString().replace("<td>","").replace("</td>",""));
+                                    String[] mubers=lis.toString().replace("<td>","").replace("</td>","").split("\\|");
+                                    String[] red5=mubers[0].split(" ");
+                                    String[] blue2=mubers[1].split(" ");
+                                    map.put("r1",red5[0]);
+                                    map.put("r2",red5[1]);
+                                    map.put("r3",red5[2]);
+                                    map.put("r4",red5[3]);
+                                    map.put("r5",red5[4]);
+                                    map.put("b1",blue2[0]);
+                                    map.put("b2",blue2[1]);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            }
         }
+        return  map;
     }
 
     public static void bingo(int rowno) {

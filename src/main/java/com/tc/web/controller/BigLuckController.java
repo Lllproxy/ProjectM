@@ -102,15 +102,14 @@ public class BigLuckController {
     @GetMapping("/init")
     @ApiOperation(httpMethod="GET",value="初始化股票公司信息", notes="无参方法")
     //周一到周五每天上午10:15分执行
-    @Scheduled(cron = "0 15 10 ? * MON-FRI ")
+    //@Scheduled(cron = "0 15 10 ? * MON-FRI ")
     public Result init() {
-        String erroUrl="";
         long sta=System.currentTimeMillis();
         int count=0;
         try {
-            for (int i= 70001; i < 200067; i++) {
+            for (int i= 7001; i < 20067; i++) {
                 String number="";
-                if (i<100000){
+                if (i<10000){
                     number="0"+i;
                 }
                 //每次循环前休眠三秒,防止ip被封
@@ -122,7 +121,7 @@ public class BigLuckController {
                     map=new CatchUrl().getBigLuck(url);
                 }catch (Exception e){
                     logger.error("失败异常： "+e.getMessage());
-                    erroUrl=url;
+                    continue;
                 }
                 System.out.println(map);
                 if (map.size()==0){
@@ -142,7 +141,7 @@ public class BigLuckController {
             }
         }catch (Exception e){
             logger.error("异常"+   e.getMessage());
-            ResultGenerator.genFailResult(e.getMessage());
+
         }
         long end=System.currentTimeMillis();
         long total=end-sta;

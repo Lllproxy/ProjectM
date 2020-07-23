@@ -7,6 +7,7 @@ public class BigLuck {
     /**
      * 期数
      */
+    @Id
     private String number;
 
     /**

@@ -385,15 +385,90 @@ public class CatchUrl {
                                 if (lis.toString().contains("|")&&!lis.toString().contains("table")){
                                     System.out.println("lis>>>  "+lis.toString().replace("<td>","").replace("</td>",""));
                                     String[] mubers=lis.toString().replace("<td>","").replace("</td>","").split("\\|");
-                                    String[] red5=mubers[0].split(" ");
-                                    String[] blue2=mubers[1].split(" ");
-                                    map.put("r1",red5[0]);
-                                    map.put("r2",red5[1]);
-                                    map.put("r3",red5[2]);
-                                    map.put("r4",red5[3]);
-                                    map.put("r5",red5[4]);
-                                    map.put("b1",blue2[0]);
-                                    map.put("b2",blue2[1]);
+                                    if(mubers.length>1){
+                                        if (mubers[0].startsWith(" ")){
+                                            mubers[0]=mubers[0].substring(1,mubers[0].length());
+                                        }
+                                        String[] red5=mubers[0].split(" ");
+                                        String[] blue2=mubers[1].split(" ");
+                                        map.put("r1",red5[0]);
+                                        map.put("r2",red5[1]);
+                                        map.put("r3",red5[2]);
+                                        map.put("r4",red5[3]);
+                                        map.put("r5",red5[4]);
+                                        map.put("b1",blue2[0]);
+                                        map.put("b2",blue2[1]);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }
+        return  map;
+    }
+
+
+    public Map<String, String> getBigLuckAll(String url) {
+        Map<String ,String> map=new HashMap<>();
+        //从网络上获取网页
+        Document document=getHtmlTextByUrl(url);
+        if (document!=null) {
+            Elements elements=getElementsByTag(document,"tbody");// ul的集合
+            for(Element tbody:elements){// 依次循环每个元素，也就是一个tbody
+                if(tbody!=null){
+                    //System.out.println("table  "+tbody);
+                    for(Element li:tbody.children()){// 一个ul的子元素li，li内包含a标签
+                        //System.out.println("li "+li);
+                        if(li.children()!=null&&li.toString().contains("开奖号码")){
+                            System.out.println("td "+li.children());
+                            for (Element lis:li.children()
+                            ) {
+                                // System.out.println("lis>>>  "+lis);
+                                if (lis.toString().contains("li")){
+                                    Elements els=lis.children();
+                                    for (Element el:els
+                                    ) {
+                                        System.out.println("el  "+el.toString());
+                                        for (Element esls:el.children()){
+                                            System.out.println("esls  "+esls.toString());
+
+                                            for (Element tr:esls.children()
+                                            ) {
+                                                System.out.println("tr  "+tr.toString());
+                                                for (Element td:tr.children()
+                                                ) {
+                                                    if (td.toString().contains("li")){
+                                                        System.out.println("td  "+td.toString());
+                                                        for (Element div:td.children()){
+                                                            for (Element ul:div.children()){
+                                                                for (int i = 0; i < ul.children().size(); i++) {
+                                                                    map.put("r1",ul.children().get(0).ownText());
+                                                                    map.put("r2",ul.children().get(1).ownText());
+                                                                    map.put("r3",ul.children().get(2).ownText());
+                                                                    map.put("r4",ul.children().get(3).ownText());
+                                                                    map.put("r5",ul.children().get(4).ownText());
+                                                                    map.put("b1",ul.children().get(5).ownText());
+                                                                    map.put("b2",ul.children().get(6).ownText());
+                                                                    int r_tol=Integer.valueOf(map.get("r1"))
+                                                                            +Integer.valueOf(map.get("r2"))
+                                                                            +Integer.valueOf(map.get("r3"))
+                                                                            +Integer.valueOf(map.get("r4"))
+                                                                            +Integer.valueOf(map.get("r5"));
+                                                                    map.put("r_tol",String.valueOf(r_tol));
+                                                                    int b_tol=Integer.valueOf(map.get("b1"))+Integer.valueOf(map.get("b2"));
+                                                                    map.put("b_tol",String.valueOf(b_tol));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
 

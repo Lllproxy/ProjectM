@@ -1,5 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.tc.configurer.MybatisMysqlConfigurer,\
-com.tc.configurer.ServletContextConfig,\
-com.tc.configurer.WebMvcConfigurer,\
-com.tc.configurer.SwaggerConfigurer

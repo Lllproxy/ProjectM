@@ -1,9 +1,9 @@
-package ${basePackage}.web.controller;
+package com.tc.web.controller;
 
-import ${basePackage}.core.Result;
-import ${basePackage}.core.ResultGenerator;
-import ${basePackage}.model.${modelNameUpperCamel};
-import ${basePackage}.service.${modelNameUpperCamel}Service;
+import com.tc.core.Result;
+import com.tc.core.ResultGenerator;
+import com.tc.model.mysql.BigLuckAll;
+import com.tc.service.mysql.BigLuckAllService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +13,13 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
-* Created by ${author} on ${date}.
+* Created by bocheng.luo on 2020/07/24.
 */
 @RestController
-@RequestMapping("${baseRequestMapping}")
-public class ${modelNameUpperCamel}Controller {
+@RequestMapping("/big/luck/all")
+public class BigLuckAllController {
     @Resource
-    private ${modelNameUpperCamel}Service ${modelNameLowerCamel}Service;
+    private BigLuckAllService bigLuckAllService;
     
     
     @GetMapping("/{id}")
@@ -28,8 +28,8 @@ public class ${modelNameUpperCamel}Controller {
         @ApiImplicitParam(name = "{id}", value = "", required = true, dataType = "String")
 	}) 
     public Result detail(@PathVariable Integer id) {
-        ${modelNameUpperCamel} ${modelNameLowerCamel} = ${modelNameLowerCamel}Service.findById(id);
-        return ResultGenerator.genSuccessResult(${modelNameLowerCamel});
+        BigLuckAll bigLuckAll = bigLuckAllService.findById(id);
+        return ResultGenerator.genSuccessResult(bigLuckAll);
     }
 
     @GetMapping
@@ -40,7 +40,7 @@ public class ${modelNameUpperCamel}Controller {
 	}) 
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
-        List<${modelNameUpperCamel}> list = ${modelNameLowerCamel}Service.findAll();
+        List<BigLuckAll> list = bigLuckAllService.findAll();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

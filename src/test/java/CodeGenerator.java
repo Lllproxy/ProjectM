@@ -56,7 +56,7 @@ public class CodeGenerator {
     private static final String MAPPER_PACKAGE = MYSQL_MAPPER_PACKAGE;
     
     public static void main(String[] args) {
-    	  genCode(new String[]{"big_luck"});
+    	  genCode(new String[]{"big_luck_all"});
 //    	  genCode(new String[]{"user_info","power","role",
 //                  "verify_log","web_info","server_info",
 //                  "power_web","power_server","powe_type",

@@ -3,9 +3,11 @@ package com.tc.web.controller;
 import com.tc.common.CatchUrl;
 import com.tc.core.Result;
 import com.tc.core.ResultGenerator;
+import com.tc.model.mysql.BigLuckAll;
 import com.tc.model.mysql.ShareCompany;
 import com.tc.model.mysql.ShareErro;
 import com.tc.model.mysql.BigLuck;
+import com.tc.service.mysql.BigLuckAllService;
 import com.tc.service.mysql.BigLuckService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +31,8 @@ import java.util.*;
 public class BigLuckController {
     @Resource
     private BigLuckService bigLuckService;
+    @Resource
+    private BigLuckAllService bigLuckAllService;
 
     @Value("${api.luck.url}")
     private String luckUrl;
@@ -99,21 +103,37 @@ public class BigLuckController {
     return sb.toString();
     }
 
-    @GetMapping("/init")
-    @ApiOperation(httpMethod="GET",value="初始化股票公司信息", notes="无参方法")
-    //周一到周五每天上午10:15分执行
-    //@Scheduled(cron = "0 15 10 ? * MON-FRI ")
-    public Result init() {
+    @GetMapping("/initSeq/{start}/{endd}")
+    @ApiOperation(httpMethod="GET",value="初始化往期顺序开奖结果", notes="无参方法")
+    //周一到周日每天上午10:15分执行
+    //@Scheduled(cron = "* * 23 * * 1,3,5 ")
+    public Result initSeq(@PathVariable int start,@PathVariable int endd) {
         long sta=System.currentTimeMillis();
         int count=0;
         try {
-            for (int i= 7001; i < 20067; i++) {
+            for (int i= start; i < endd; i++) {
                 String number="";
                 if (i<10000){
                     number="0"+i;
+                }else{
+                    number=""+i;
+                }
+
+                String lastNum=number.substring(number.length()-3,number.length());
+                String firstNum=number.substring(0,2);
+                if (Integer.valueOf(firstNum)==7&&Integer.valueOf(lastNum)>93){
+                    System.out.println(number+"   跳过");
+                    continue;
+                }
+                if (Integer.valueOf(lastNum)>155){
+                    System.out.println(number+"   跳过");
+                    continue;
+                }
+                if(null!=bigLuckService.findById(number)){
+                    continue;
                 }
                 //每次循环前休眠三秒,防止ip被封
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
                 String url=luckUrl.replace("@",number);
                 System.out.println("获取>>>   "+number+"   期数的大乐透顺序号。  获取地址："+url);
                 Map<String,String> map=new HashMap<>();
@@ -137,6 +157,73 @@ public class BigLuckController {
                 bigLuck.setBlue1(map.get("b1"));
                 bigLuck.setBlue2(map.get("b2"));
                 bigLuckService.save(bigLuck);
+                count++;
+            }
+        }catch (Exception e){
+            logger.error("异常"+   e.getMessage());
+
+        }
+        long end=System.currentTimeMillis();
+        long total=end-sta;
+        return ResultGenerator.genSuccessResult("初始化成功"+count+"条数据；总耗时"+total+"毫秒");
+    }
+
+    @GetMapping("/initAll/{start}/{endd}")
+    @ApiOperation(httpMethod="GET",value="初始化往期开奖结果", notes="无参方法")
+    //周一到周日每天上午10:15分执行
+    //@Scheduled(cron = "* * 23 * * 1,3,5 ")
+    public Result initAll(@PathVariable int start,@PathVariable int endd) {
+        long sta=System.currentTimeMillis();
+        int count=0;
+        try {
+            for (int i= 7001; i < 20067; i++) {
+                String number="";
+                if (i<10000){
+                    number="0"+i;
+                }else{
+                    number=""+i;
+                }
+
+                String lastNum=number.substring(number.length()-3,number.length());
+                String firstNum=number.substring(0,2);
+                if (Integer.valueOf(firstNum)==7&&Integer.valueOf(lastNum)>93){
+                    System.out.println(number+"   跳过");
+                    continue;
+                }
+                if (Integer.valueOf(lastNum)>155){
+                    System.out.println(number+"   跳过");
+                    continue;
+                }
+                if(null!=bigLuckAllService.findById(number)){
+                    continue;
+                }
+                //每次循环前休眠三秒,防止ip被封
+                //Thread.sleep(1000);
+                String url=luckUrl.replace("@",number);
+                System.out.println("获取>>>   "+number+"   期数的大乐透顺序号。  获取地址："+url);
+                Map<String,String> map=new HashMap<>();
+                try {
+                    map=new CatchUrl().getBigLuckAll(url);
+                }catch (Exception e){
+                    logger.error("失败异常： "+e.getMessage());
+                    continue;
+                }
+                System.out.println(map);
+                if (map.size()==0){
+                    continue;
+                }
+                BigLuckAll bigLuck=new BigLuckAll();
+                bigLuck.setNumber(number);
+                bigLuck.setRed1(map.get("r1"));
+                bigLuck.setRed2(map.get("r2"));
+                bigLuck.setRed3(map.get("r3"));
+                bigLuck.setRed4(map.get("r4"));
+                bigLuck.setRed5(map.get("r5"));
+                bigLuck.setBlue1(map.get("b1"));
+                bigLuck.setBlue2(map.get("b2"));
+                bigLuck.setrTol(map.get("r_tol"));
+                bigLuck.setbTol(map.get("b_tol"));
+                bigLuckAllService.save(bigLuck);
                 count++;
             }
         }catch (Exception e){
